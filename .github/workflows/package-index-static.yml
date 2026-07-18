@@ -1,0 +1,72 @@
+name: Package Lotfinity Index Static Assets
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/package-index-static.yml'
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Collect index static assets
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          root="website/static"
+          out="lotfinity-index-static-assets"
+          rm -rf "$out"
+          mkdir -p "$out"
+
+          files=(
+            "css/main.css"
+            "css/language_switcher.css"
+            "fonts/Sansation_Regular.woff"
+            "img/lotfinity.png"
+            "favicons/favicon.ico"
+            "img/logo11.gif"
+            "img/logo22.gif"
+            "img/denti.webp"
+            "img/app1.webp"
+            "img/app2.webp"
+            "img/snn.webp"
+            "img/django.webp"
+            "img/wagtail.webp"
+            "img/postgresql.webp"
+            "img/openai.webp"
+            "img/react.webp"
+            "img/azure.webp"
+            "img/htmlcss.webp"
+            "img/js.webp"
+            "img/gsap.webp"
+            "img/python.webp"
+            "icons/gmail.svg"
+            "icons/telegram.svg"
+            "icons/whatsapp.svg"
+            "icons/github.svg"
+            "js/main.js"
+          )
+
+          for rel in "${files[@]}"; do
+            src="$root/$rel"
+            test -f "$src" || { echo "Missing required asset: $src" >&2; exit 1; }
+            mkdir -p "$out/$(dirname "$rel")"
+            cp -p "$src" "$out/$rel"
+          done
+
+          count=$(find "$out" -type f | wc -l)
+          test "$count" -eq 26 || { echo "Expected 26 files, found $count" >&2; exit 1; }
+
+      - name: Upload packaged assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: lotfinity-index-static-assets
+          path: lotfinity-index-static-assets/
+          if-no-files-found: error
+          compression-level: 9
+          retention-days: 90
