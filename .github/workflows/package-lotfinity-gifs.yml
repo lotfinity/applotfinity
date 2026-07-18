@@ -1,0 +1,29 @@
+name: Package Lotfinity GIFs
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Stage GIF assets
+        run: |
+          mkdir -p lotfinity-gifs
+          cp website/static/img/logo11.gif lotfinity-gifs/
+          cp website/static/img/logo22.gif lotfinity-gifs/
+
+      - name: Upload GIF archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: lotfinity-gifs
+          path: lotfinity-gifs/
+          if-no-files-found: error
+          compression-level: 9
