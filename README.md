@@ -297,3 +297,15 @@ status and visibility.
 **Localization remains outstanding:** homepage Wagtail Site Settings are currently
 site-wide, and `/tr/` and `/fr/` still show this English editorial text. Do not
 claim fully translated projects until Wagtail localization is wired up.
+
+### Verified interactive Ohmlet demo (28 October 2026)
+
+The public **Ohmlet 3D breadboard simulator** is live at
+`https://byd.whatsynaptic.com/`. The endpoint was checked over HTTPS (200),
+and its actual React/WebGL interface was tested in Chrome: workspaces, circuit
+parts, simulation controls and onboarding are visible with no page JS errors.
+The Ohmlet Wagtail entry has a distinct **Launch live app** link and a separate
+**Public source** link. The project screenshot is linked to the live app when
+that URL is present; the case study remains independently accessible.
+The curator seeds this URL for new databases but never overwrites later Wagtail
+editor changes to existing project pages.

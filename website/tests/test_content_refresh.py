@@ -24,12 +24,14 @@ class CuratedPortfolioTests(TestCase):
         )
         self.assertEqual(len(featured), 6)
         self.assertEqual(featured[0].slug, "ohmlet")
+        self.assertEqual(featured[0].external_url, "https://byd.whatsynaptic.com/")
         self.assertEqual(featured[1].slug, "pricebridge")
         self.assertEqual(featured[-1].slug, "beyond-website")
         for project in featured:
             self.assertTrue(project.source_url.startswith("https://github.com/lotfinity/"))
             self.assertTrue(project.focus_area)
-            self.assertFalse(project.external_url)
+            if project.slug != "ohmlet":
+                self.assertFalse(project.external_url)
         self.assertEqual(
             AppPage.objects.filter(show_on_homepage=False).count(), 4,
         )
@@ -46,6 +48,8 @@ class CuratedPortfolioTests(TestCase):
         self.assertContains(home, "Connect")
         self.assertContains(home, "The interesting work starts")
         self.assertContains(home, "Ohmlet")
+        self.assertContains(home, 'href="https://byd.whatsynaptic.com/"')
+        self.assertContains(home, "Launch live app")
         self.assertContains(home, "PriceBridge")
         self.assertNotContains(home, "self-thinking, self-optimizing")
         self.assertNotContains(home, "synaptic-remote-gateway")
@@ -54,6 +58,7 @@ class CuratedPortfolioTests(TestCase):
         self.assertContains(response, "Selected builds")
         self.assertContains(response, "Earlier website work")
         self.assertContains(response, "Public source")
+        self.assertContains(response, "Launch live app")
 
     def test_rerun_does_not_overwrite_editor_edits_or_create_duplicates(self):
         site = Site.objects.get(is_default_site=True)

@@ -120,6 +120,7 @@ PROJECTS = (
         "category": "Hardware Simulation",
         "stage": "active",
         "repo": "https://github.com/lotfinity/ohmlet",
+        "demo": "https://byd.whatsynaptic.com/",
         "description": (
             "A browser-based 3D breadboard workbench combining visual circuit assembly "
             "with analog and digital simulation. Hardware experimentation, without needing "
@@ -301,7 +302,7 @@ class Command(BaseCommand):
             project = index.add_child(instance=AppPage(
                 title=data["title"], slug=slug, locale=index.locale,
                 description=data["description"],
-                source_url=data["repo"], external_url="",
+                source_url=data["repo"], external_url=data.get("demo", ""),
                 project_stage=data["stage"], focus_area=data["category"],
                 key_features="\n".join(data["features"]),
                 display_order=order * 10, mockup_design=icon,

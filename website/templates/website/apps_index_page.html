@@ -29,7 +29,7 @@
                 <div class="case-meta"><span>{{ project.focus_area }}</span><span class="stage">{{ project.get_project_stage_display }}</span></div>
                 <h3><a href="{{ project.url }}">{{ project.title }}</a></h3>
                 <p>{{ project.description }}</p>
-                <div class="case-actions"><a href="{{ project.url }}">Read case study ↗</a>{% if project.source_url %}<a href="{{ project.source_url }}" rel="noopener noreferrer" target="_blank">Public source ↗</a>{% endif %}</div>
+                <div class="case-actions"><a href="{{ project.url }}">Read case study ↗</a>{% if project.external_url %}<a href="{{ project.external_url }}" rel="noopener noreferrer" target="_blank">{% if project.source_url %}Launch live app{% else %}Visit website{% endif %} ↗</a>{% endif %}{% if project.source_url %}<a href="{{ project.source_url }}" rel="noopener noreferrer" target="_blank">Public source ↗</a>{% endif %}</div>
             </article>
             {% endif %}{% endfor %}
         </div>

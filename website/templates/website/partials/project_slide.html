@@ -3,7 +3,7 @@
     {% if project.mockup_design %}
         {% image project.mockup_design width-960 format-webp as mockup %}
         {% if project.source_url %}
-            <a href="{{ project.url }}" class="project-visual-link" aria-label="Read {{ project.title }} case study">
+            <a href="{% if project.external_url %}{{ project.external_url }}{% else %}{{ project.url }}{% endif %}" class="project-visual-link" {% if project.external_url %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{% if project.external_url %}Open live {{ project.title }} application{% else %}Read {{ project.title }} case study{% endif %}">
                 <img src="{{ mockup.url }}" class="img--responsive project-image"
                      width="{{ mockup.width }}" height="{{ mockup.height }}" loading="lazy" alt="{{ project.title }} project screenshot">
             </a>
@@ -42,7 +42,7 @@
         <div class="project-actions">
             <a href="{{ project.url }}">Read case study <span aria-hidden="true">↗</span></a>
             {% if project.source_url %}<a href="{{ project.source_url }}" target="_blank" rel="noopener noreferrer">Source code <span aria-hidden="true">↗</span></a>{% endif %}
-            {% if project.external_url %}<a href="{{ project.external_url }}" target="_blank" rel="noopener noreferrer">External site <span aria-hidden="true">↗</span></a>{% endif %}
+            {% if project.external_url %}<a href="{{ project.external_url }}" target="_blank" rel="noopener noreferrer">{% if project.source_url %}Launch live app{% else %}Visit website{% endif %} <span aria-hidden="true">↗</span></a>{% endif %}
         </div>
     </div>
 </div>

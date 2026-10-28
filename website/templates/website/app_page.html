@@ -19,7 +19,7 @@
     <p class="page-lead">{{ page.description }}</p>
     <div class="detail-actions">
         {% if page.source_url %}<a class="primary-action" href="{{ page.source_url }}" rel="noopener noreferrer" target="_blank">Explore public source ↗</a>{% endif %}
-        {% if page.external_url %}<a class="secondary-action" href="{{ page.external_url }}" rel="noopener noreferrer" target="_blank">Visit project website ↗</a>{% endif %}
+        {% if page.external_url %}<a class="secondary-action" href="{{ page.external_url }}" rel="noopener noreferrer" target="_blank">{% if page.source_url %}Launch live app{% else %}Visit project website{% endif %} ↗</a>{% endif %}
     </div>
     {% if page.mockup_design %}
         {% image page.mockup_design width-1200 format-webp as screenshot %}
