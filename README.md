@@ -375,3 +375,9 @@ numbers are derived from Wagtail ordering; archive projects remain separate.
 See [`docs/portfolio-art-direction.md`](docs/portfolio-art-direction.md) for the
 six-project visual brief and the repeatable Ohmlet banner workflow. The v1 Ohmlet
 WebP and CMS image are stored on ASUS under `media/`, not in Git.
+
+**PriceBridge real screenshots (Oct 29, 2026):** a private Django/Docker
+preview on ASUS uses **historical July 18 evidence**, prominently labelled
+as archival, and supplies verified desktop/mobile Chrome captures to Wagtail's
+`device_*_image` fields. The promotional `banner_image` is still separate and
+unset. See `docs/portfolio-art-direction.md` for provenance and limitations.

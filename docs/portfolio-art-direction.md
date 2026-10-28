@@ -36,3 +36,11 @@ python manage.py apply_project_banner --slug ohmlet \
 ```
 
 Use the local preview settings environment when running these on ASUS. All original images, CMS content and media databases stay outside Git; media exports need to be included in normal server backups.
+
+### PriceBridge — real preview screenshots captured 2026-10-29
+
+No publicly discoverable `lotfinity/pricebridge` or `lotfinity/pricebridge-clean` image was found on Docker Hub. A private, locally-built Django Docker preview runs on ASUS at `http://100.73.225.127:8136/` (Tailscale only). The upstream repository provides no precomputed opportunities; a sanitized historical database from the repository's **2026-07-18** snapshots was used to recompute **one real Apple iPhone comparison**. Historical FX and listings must **not** be described as fresh prices or currently available offers. The cloned preview visibly labels this archival status and does not allow web writes.
+
+Authentic desktop and mobile browser screenshots were captured with Playwright and imported into Wagtail PriceBridge `device_desktop_image` and `device_mobile_image` slots using `scripts/import_pricebridge_screenshots.py`. Their original PNGs are under ASUS `/home/lofa/DEV/portfolio-previews/pricebridge-deploy/screenshots/`; uploaded optimized WebPs are under `media/original_images/`. The case study now displays the two real captures inside its CSS-only laptop/phone mockups.
+
+**PriceBridge promotional banner remains pending**: it should combine genuine screenshots with an accurate deep-blue/mint-green editorial graphic. Do not imply the deployed app already contains fully populated live market intelligence. The original PriceBridge GitHub repository was not modified or pushed as part of the private Docker-preview setup.
