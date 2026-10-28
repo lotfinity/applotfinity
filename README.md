@@ -210,10 +210,13 @@ mobile. This caused unusually high CPU/GPU load, hot phones and laptop fans.
 
 To preserve the same 3D background without keeping the GPU at full load:
 
-- Cap WebGL to approximately **12.5 FPS on desktop** and **5.6 FPS on touch**.
-- Use a lower GPU drawing-buffer resolution (0.85x desktop, 0.6x touch) and
-  turn off multisampling on touch screens. The CSS canvas still fills the page.
-- Pause WebGL drawing after **3.8 seconds without input**, and while the page
+- After testing, **restore smooth frame rates**: target 60 FPS on desktop and
+  45 FPS on touch; these are caps, not guaranteed device FPS.
+- Preserve antialiasing and higher drawing-buffer resolution (1.25x desktop,
+  1.15x touch), because the original lower caps visibly damaged quality.
+- Replace the excessively dense wireframe geometry (130,680 indices per draw)
+  with 34,680 desktop / 20,280 touch — **3.8x / 6.4x less mesh work**.
+- Pause WebGL drawing after **6.5 seconds without input**, and while the page
   is hidden. Reactivate on scroll, pointer movement, touch, or keyboard input.
 - With `prefers-reduced-motion: reduce` or Save-Data, draw the scene once.
 - Remove the second externally loaded GSAP/ScrollTrigger runtime. Skill-ring
@@ -224,7 +227,7 @@ The changes are a small, exact-match patch to the **existing minified bundle**.
 `scripts/optimize_webgl.py` documents the modification and is deliberately
 one-shot, refusing to run on an already-patched or incompatible file. If you
 replace/rebuild the bundle in the future, reapply and test this optimization
-rather than reverting to the unbounded render loop. The `eco-2` query string
+rather than reverting to the unbounded render loop. The `smooth-1` query string
 on `main.js` refreshes existing browser caches.
 
 The browser profiling used headless Chrome on ASUS with software rendering:
@@ -233,3 +236,11 @@ with the capped/idle renderer **no draw calls while idle** and ~0.5 seconds
 of task time over a subsequent 4 seconds. These are local reproduction results,
 **not measurements of a visitor's actual phone**. In the preview we verified
 that scrolling, the project carousel, and progress circles still work.
+
+**Note on compiling:** the legacy 550 KB minified bundle *already contains*
+Three.js and the original shader, mixed together with scrolling/GSAP logic.
+Simply recompiling it would not reduce the 130K-index wireframe workload; the
+mesh reduction does. A fully tree-shaken replacement would require separating
+and rebuilding the original bundled animation sources, and needs independent
+visual/interaction QA before replacing this working scene. The current patch
+preserves the original shader and existing scroll choreography.
