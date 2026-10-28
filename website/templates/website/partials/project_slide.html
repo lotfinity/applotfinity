@@ -1,30 +1,48 @@
 {% load wagtailimages_tags i18n %}
-<div class="swiper-slide">
+<div class="swiper-slide project-card">
     {% if project.mockup_design %}
         {% image project.mockup_design width-960 format-webp as mockup %}
-        <img src="{{ mockup.url }}" class="img--responsive mockup"
-             width="{{ mockup.width }}" height="{{ mockup.height }}" loading="lazy"
-             alt="{{ project.title }}"
-             data-url="{% if project.external_url %}{{ project.external_url }}{% else %}{{ project.url }}{% endif %}">
+        {% if project.source_url %}
+            <a href="{{ project.url }}" class="project-visual-link" aria-label="Read {{ project.title }} case study">
+                <img src="{{ mockup.url }}" class="img--responsive project-image"
+                     width="{{ mockup.width }}" height="{{ mockup.height }}" loading="lazy" alt="{{ project.title }} project screenshot">
+            </a>
+        {% else %}
+            <img src="{{ mockup.url }}" class="img--responsive mockup project-image"
+                 width="{{ mockup.width }}" height="{{ mockup.height }}" loading="lazy"
+                 alt="{{ project.title }}" data-url="{% if project.external_url %}{{ project.external_url }}{% else %}{{ project.url }}{% endif %}">
+        {% endif %}
     {% else %}
-        <a class="text-link" href="{% if project.external_url %}{{ project.external_url }}{% else %}{{ project.url }}{% endif %}"
-           target="_blank" rel="noopener noreferrer">{% trans "Visit project" %}</a>
+        <a class="project-cover" href="{{ project.url }}" aria-label="Read {{ project.title }} case study">
+            <span class="project-cover__eyebrow">{{ project.focus_area|default:"DIGITAL SYSTEMS" }}</span>
+            <strong class="project-cover__name">{{ project.title }}</strong>
+            <span class="project-cover__footnote">REAL BUILD <span aria-hidden="true">/</span> {{ project.get_project_stage_display }}</span>
+            <span class="project-cover__glyph" aria-hidden="true">↗</span>
+        </a>
     {% endif %}
-    <div class="slide-content">
+    <div class="slide-content project-content">
+        <div class="project-meta">
+            {% if project.focus_area %}<span class="project-category">{{ project.focus_area }}</span>{% endif %}
+            <span class="project-stage">{{ project.get_project_stage_display }}</span>
+        </div>
         <h3 class="app-name">{{ project.title }}</h3>
         {% if project.description %}<p class="app-description">{{ project.description }}</p>{% endif %}
         {% if project.feature_items %}
-            <strong>{% trans "Key Features:" %}</strong>
-            <ul>{% for feature in project.feature_items %}<li>{{ feature }}</li>{% endfor %}</ul>
+            <ul class="project-feature-list">{% for feature in project.feature_items %}<li>{{ feature }}</li>{% endfor %}</ul>
         {% endif %}
         {% if project.tech_stack.all %}
-            <ul class="tech-stack">
+            <ul class="tech-stack project-tech-stack">
                 {% for tech in project.tech_stack.all %}
                     <li>{% if tech.logo %}{% image tech.logo width-35 as icon %}
                         <img src="{{ icon.url }}" alt="" width="{{ icon.width }}" height="{{ icon.height }}">{% endif %}
-                        {{ tech.name }}{% if tech.description %} - {{ tech.description }}{% endif %}</li>
+                        {{ tech.name }}</li>
                 {% endfor %}
             </ul>
         {% endif %}
+        <div class="project-actions">
+            <a href="{{ project.url }}">Read case study <span aria-hidden="true">↗</span></a>
+            {% if project.source_url %}<a href="{{ project.source_url }}" target="_blank" rel="noopener noreferrer">Source code <span aria-hidden="true">↗</span></a>{% endif %}
+            {% if project.external_url %}<a href="{{ project.external_url }}" target="_blank" rel="noopener noreferrer">External site <span aria-hidden="true">↗</span></a>{% endif %}
+        </div>
     </div>
 </div>

@@ -21,3 +21,19 @@ def get_portfolio_projects(context):
         .select_related("mockup_design")
         .prefetch_related("tech_stack", "tech_stack__logo")
     )
+
+@register.simple_tag(takes_context=True)
+def get_portfolio_index(context):
+    """Return this site's published projects landing page when available."""
+    from website.models import AppsIndexPage
+
+    request = context.get("request")
+    site = Site.find_for_request(request) if request else None
+    if not site:
+        return None
+    return (
+        AppsIndexPage.objects.live().public()
+        .child_of(site.root_page)
+        .filter(slug="projects")
+        .first()
+    )

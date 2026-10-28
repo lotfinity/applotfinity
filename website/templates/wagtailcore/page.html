@@ -384,6 +384,12 @@
                 <div class="swiper-button-prev"></div>
                 <div class="swiper-pagination"></div>
             </div>
+            {% get_portfolio_index as portfolio_index %}
+            {% if portfolio_index %}
+            <div class="portfolio-browse">
+                <a href="{% pageurl portfolio_index %}" class="portfolio-browse__link">Explore all public builds & case studies <span aria-hidden="true">↗</span></a>
+            </div>
+            {% endif %}
             {% endif %}
             {% if home.show_services %}
             <div class="web__section__legende section__legende">
@@ -460,12 +466,12 @@
                                 <circle class="circle-bg" cx="60" cy="60" r="50"></circle>
                                 <circle class="circle-fg" cx="60" cy="60" r="50"></circle>
                             </svg>
-                            {% if skill.icon %}
                             <div class="skill-logo">
+                                {% if skill.icon %}
                                 {% image skill.icon width-70 as skill_image %}
                                 <img src="{{ skill_image.url }}" alt="{{ skill.name }}" loading="lazy">
+                                {% else %}<span class="skill-monogram">{{ skill.name|slice:':2' }}</span>{% endif %}
                             </div>
-                            {% endif %}
                         </div>
                         <div class="skill-label">{{ skill.name }}{% if skill.description %} – {{ skill.description }}{% endif %}</div>
                     </div>

@@ -232,6 +232,24 @@ class AppPage(Page):
     external_url = models.URLField(
         blank=True, help_text="Optional live demo or external project website."
     )
+    source_url = models.URLField(
+        blank=True,
+        help_text="Public source repository (leave blank for private work).",
+    )
+    focus_area = models.CharField(
+        max_length=90, blank=True, default="",
+        help_text="Short category such as Hardware Simulation or Data Intelligence.",
+    )
+    project_stage = models.CharField(
+        max_length=32,
+        default="case_study",
+        choices=[
+            ("active", "Active development"),
+            ("prototype", "Prototype"),
+            ("test_release", "Test release"),
+            ("case_study", "Case study"),
+        ],
+    )
     key_features = models.TextField(
         blank=True,
         help_text="One key feature per line; shown beneath the project description.",
@@ -259,6 +277,9 @@ class AppPage(Page):
         FieldPanel("mockup_design"),
         FieldPanel("description"),
         FieldPanel("external_url"),
+        FieldPanel("source_url"),
+        FieldPanel("focus_area"),
+        FieldPanel("project_stage"),
         FieldPanel("key_features"),
         FieldPanel("show_on_homepage"),
         FieldPanel("display_order"),

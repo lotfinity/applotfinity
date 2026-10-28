@@ -244,3 +244,56 @@ mesh reduction does. A fully tree-shaken replacement would require separating
 and rebuilding the original bundled animation sources, and needs independent
 visual/interaction QA before replacing this working scene. The current patch
 preserves the original shader and existing scroll choreography.
+
+### Portfolio content refresh — public work and engineering philosophy (28 October 2026)
+
+The site now introduces Lotfinity as a **systems-oriented product builder** with
+"Connect the Unconnected" as the homepage headline. The core editorial stance:
+inspect the constraints of existing hardware/software, reuse proven components,
+connect the missing interfaces, and report practical results and limitations.
+Marketing claims about omniscient/autonomous websites were removed because the
+portfolio does not substantiate them. Skills are shown as areas of focus; the
+legacy percentage circles are illustrative, **not measured proficiency scores**.
+
+The updated **six featured public repositories** are: `ohmlet`, `pricebridge-clean`,
+`lotot-android`, `neon-strip-studio`, `IstanbulPropTech` and
+`beyond-website-v5`. Stage labels distinguish active development, prototype,
+personal test release and case study. The LotoT project credits its AndrOBD
+upstream foundation, while Neon Strip Studio discloses limitations of target
+hardware testing. Descriptions are based on the owner's GitHub portfolio review
+and representative public READMEs/metadata, not comprehensive execution audits.
+**Private Synaptic repositories are deliberately excluded** from the published
+repository listings and source links.
+
+The old DentiDelil/Salon Nassnor content remains editable in Wagtail but is
+unfeatured and lives in the historical section of the **Projects** index.
+
+`AppPage` now has `source_url`, `focus_area` and `project_stage` fields, all editable
+in Wagtail. A **source URL** points to an actual public repository; it is NOT
+mistaken for an embeddable live demo. `external_url` is reserved for an external
+website. The new project index and case-study detail pages are lightweight,
+semantic, accessible layouts that do not initialize the heavy animated homepage
+JavaScript. Project posters without screenshots are CSS illustrations rather than
+fabricated screenshots. Ohmlet uses the real public source screenshot
+`lotfinity/ohmlet/shots/desktop.png`, resized to
+`website/static/img/ohmlet-portfolio.webp`.
+
+**Reproduce on another environment** after creating the Wagtail site and running
+migrations (and `seed_portfolio`, `seed_homepage` if the original CMS content is
+absent):
+
+```bash
+python manage.py curate_portfolio --apply
+```
+
+The command is opt-in, does not overwrite an already-customized homepage,
+preserves pre-existing project pages by slug, and is safe to re-run. Its dry run
+(without `--apply`) only describes proposed changes. Run it with an appropriate
+settings module. Back up the database/media first. In the ASUS preview,
+`/en/projects/` shows featured and historical entries; `Settings → Lotfinity
+homepage` edits the message; `Pages → Projects` edits each project, source link,
+status and visibility.
+
+**Localization remains outstanding:** homepage Wagtail Site Settings are currently
+site-wide, and `/tr/` and `/fr/` still show this English editorial text. Do not
+claim fully translated projects until Wagtail localization is wired up.
