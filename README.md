@@ -389,3 +389,13 @@ vehicle adapter was connected, so no real ECU data was recorded. The
 second optional mobile screenshot field (`device_mobile_secondary_image`)
 allows a truthful two-screen gallery without manufacturing a desktop UI.
 See `docs/portfolio-art-direction.md` for provenance and source paths.
+
+**Neon Strip Studio (Oct 29, 2026):** real web editor/screensaver-demo
+screenshots captured at desktop and mobile browser sizes from source commit
+`89e5e8e`, with a distinct Wagtail banner and screenshot mockups. The
+Tailscale-only static preview runs on ASUS as `neon-strip-studio-preview` at
+`http://100.73.225.127:8137/`, and its source/Compose configuration are
+outside Git. The asset generator/import scripts live in `scripts/`; original
+captures and final WebPs live under `media/`, included in CMS backups.
+These are offline demos, **not captured live WLED hardware**. See
+`docs/portfolio-art-direction.md` for the reproducible workflow.
