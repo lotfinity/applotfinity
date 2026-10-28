@@ -65,3 +65,6 @@ CACHES = {
         "TIMEOUT": 14400,
     }
 }
+
+# Content editors need immediate updates until site-setting cache invalidation is added.
+WAGTAIL_CACHE = False

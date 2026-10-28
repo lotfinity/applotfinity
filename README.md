@@ -157,3 +157,46 @@ not a production login. The HTTP-based LAN preview is **not production-grade**.
 **Current localization limitation:** the original imported project content is
 in English on each language route. Translate `AppPage` content with Wagtail
 Localize in a later pass; do not treat homepage routes as fully translated yet.
+
+### Edit the entire animated homepage in Wagtail
+
+The homepage's site-wide content is now editable in **Wagtail Admin →
+Settings → Lotfinity homepage**. The ASUS preview settings editor is at:
+
+`http://100.73.225.127:8092/admin/settings/website/homepagesettings/1/`
+
+Editors can change the hero headline, work/service copy, project carousel labels,
+ordered service checklist, Studio introduction, individual animated skill circles
+(names, logos, descriptions, percentages and display order), contact links,
+website title and SEO description. The **Show projects**, **Show services**, and
+**Show studio** checkboxes control section visibility. The homepage animations
+and original CSS selectors remain in place. Project **records** are still edited
+under **Pages → Home → Projects**, rather than in site settings.
+
+The editor is a **Wagtail Site Setting**: it applies to this site, including all
+currently available language routes. It is **not locale-specific**; manually
+translated homepage text is a separate next step. English seed content is used
+until proper per-language content is implemented. Wagtail only stores and serves
+what the editor publishes/saves; it does not make the marketing descriptions
+true by itself. Review any capabilities claimed in those descriptions.
+
+To initialize the existing 8 services and 8 skills in another database, run:
+
+```bash
+python manage.py migrate
+python manage.py seed_homepage
+```
+
+On ASUS, set `PORTFOLIO_PREVIEW_SECRET` and select
+`--settings=mysite.settings.preview` for both commands. The seeder is safe to
+repeat: it skips existing nonempty service/skill lists and **does not overwrite
+edited content**. It imports the original skill icons into Wagtail Images.
+
+**Backup:** The current local preview database and media are backed up outside
+Git in `/home/lofa/DEV/portfolio-backups/`. Secrets, credentials, database files,
+media files, and cache output are ignored by Git. Branch
+`work/lotfinity-foundation` is not merged into `main`.
+
+Production page caching is intentionally disabled for now so the site-wide
+homepage settings appear immediately after editor saves. Reintroduce caching
+only with explicit invalidation when homepage settings change.

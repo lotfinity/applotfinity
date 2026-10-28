@@ -396,3 +396,5 @@ class InstagramPostPage(CoderedWebPage):
         post = get_object_or_404(InstagramPostSnippet, id=post_id)
         content = render_to_string("post_content.html", {"post": post})
         return JsonResponse({"content": content})
+# Site-level homepage content and ordered editor-controlled components.
+from .homepage_settings import HomepageSettings, HomepageService, HomepageSkill  # noqa: E402,F401
