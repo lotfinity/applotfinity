@@ -61,27 +61,20 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sitemaps",
-    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
-    # Save pages to cache. Must be FIRST.
+    # Wagtail cache updater must stay first; cache fetcher must stay last.
     "wagtailcache.cache.UpdateCacheMiddleware",
-    # Common functionality
+    "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
-    # Security
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "django.middleware.security.SecurityMiddleware",
-    "django.middleware.locale.LocaleMiddleware",  # Ensure this is included
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    # CMS functionality
-    # Fetch from cache. Must be LAST.
-    'mysite.middleware.CustomDebugToolbarMiddleware',  # Add this line
-    'mysite.middleware.SuperuserDebugMiddleware',
     "wagtailcache.cache.FetchFromCacheMiddleware",
 ]
 
@@ -137,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-X_FRAME_OPTIONS = "ALLOWALL"
+X_FRAME_OPTIONS = "SAMEORIGIN"  # Wagtail CMS uses same-origin admin previews.
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

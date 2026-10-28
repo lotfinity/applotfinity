@@ -229,7 +229,24 @@ class AppPage(Page):
         verbose_name="Mockup Design",
     )
     description = models.TextField(blank=True, verbose_name="App Description")
+    external_url = models.URLField(
+        blank=True, help_text="Optional live demo or external project website."
+    )
+    key_features = models.TextField(
+        blank=True,
+        help_text="One key feature per line; shown beneath the project description.",
+    )
+    show_on_homepage = models.BooleanField(default=True)
+    display_order = models.PositiveIntegerField(
+        default=0, help_text="Lower numbers appear first on the homepage."
+    )
     tech_stack = ParentalManyToManyField("TechStack", blank=True)
+
+    parent_page_types = ["website.AppsIndexPage"]
+
+    @property
+    def feature_items(self):
+        return [line.strip() for line in self.key_features.splitlines() if line.strip()]
 
     body = StreamField(
         AppStreamBlock(),  # Use the custom block defined earlier
@@ -241,6 +258,10 @@ class AppPage(Page):
     content_panels = Page.content_panels + [
         FieldPanel("mockup_design"),
         FieldPanel("description"),
+        FieldPanel("external_url"),
+        FieldPanel("key_features"),
+        FieldPanel("show_on_homepage"),
+        FieldPanel("display_order"),
         FieldPanel("tech_stack", widget=forms.CheckboxSelectMultiple),
         FieldPanel("body"),
     ]
@@ -271,7 +292,11 @@ class AppsIndexPage(Page):
     subpage_types = ["AppPage"]
 
     def get_apps(self):
-        return AppPage.objects.live().descendant_of(self).order_by("-first_published_at")
+        return (
+            AppPage.objects.live().public().descendant_of(self)
+            .order_by("display_order", "title")
+            .prefetch_related("tech_stack", "tech_stack__logo")
+        )
 
     def get_context(self, request):
         context = super().get_context(request)

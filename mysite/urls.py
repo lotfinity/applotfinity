@@ -51,3 +51,14 @@ if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include(debug_toolbar.urls)),
     ]
+
+# Local-only preview serves media from the isolated preview filesystem.
+# Public deployments must use the web server / storage backend instead.
+if getattr(settings, "IS_LOCAL_PREVIEW", False):
+    from django.urls import re_path
+    from django.views.static import serve as serve_local_media
+
+    urlpatterns += [
+        re_path(r"^media/(?P<path>.*)$", serve_local_media,
+                {"document_root": settings.MEDIA_ROOT}),
+    ]

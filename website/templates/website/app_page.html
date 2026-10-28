@@ -1,35 +1,32 @@
-{% extends "website/apps_index_page.html" %}
-
+{% extends "website/base.html" %}
+{% load wagtailcore_tags wagtailimages_tags i18n %}
 {% block content %}
-<div class="app-page-detail">
+<article class="app-page-detail">
     <h1>{{ page.title }}</h1>
-
     {% if page.mockup_design %}
-        <div class="mockup">
-            <img src="{{ page.mockup_design.url }}" alt="{{ page.mockup_design.title }}" class="img--responsive">
-        </div>
+        {% image page.mockup_design width-1200 format-webp as project_image %}
+        <img src="{{ project_image.url }}" width="{{ project_image.width }}" height="{{ project_image.height }}"
+             alt="{{ page.title }}" class="img--responsive">
     {% endif %}
-
-    {% if page.description %}
-        <p class="app-description">
-            {{ page.description|linebreaks }}
-        </p>
+    {% if page.description %}<p class="app-description">{{ page.description|linebreaksbr }}</p>{% endif %}
+    {% if page.feature_items %}
+        <h2>{% trans "Key Features:" %}</h2>
+        <ul>{% for feature in page.feature_items %}<li>{{ feature }}</li>{% endfor %}</ul>
     {% endif %}
-
     {% if page.tech_stack.all %}
-        <div class="tech-stack">
-            <h3>Tech Stack</h3>
-            <ul>
-                {% for tech in page.tech_stack.all %}
-                    <li>
-                        {% if tech.logo %}
-                            <img src="{{ tech.logo.file.url }}" alt="{{ tech.name }}" style="max-width: 35px;">
-                        {% endif %}
-                        {{ tech.name }} - {{ tech.description }}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+        <h2>{% trans "Tech Stack" %}</h2>
+        <ul class="tech-stack">
+        {% for tech in page.tech_stack.all %}
+            <li>{% if tech.logo %}{% image tech.logo width-35 as icon %}
+                <img src="{{ icon.url }}" alt="" width="{{ icon.width }}" height="{{ icon.height }}">{% endif %}
+                {{ tech.name }}{% if tech.description %} - {{ tech.description }}{% endif %}</li>
+        {% endfor %}
+        </ul>
     {% endif %}
-</div>
+    {% if page.external_url %}
+        <p><a href="{{ page.external_url }}" target="_blank" rel="noopener noreferrer">
+            {% trans "Visit project" %}</a></p>
+    {% endif %}
+    {% if page.body %}<div class="app-page-body">{{ page.body }}</div>{% endif %}
+</article>
 {% endblock %}

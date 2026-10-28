@@ -1,51 +1,17 @@
 {% extends "website/base.html" %}
-
+{% load i18n %}
 {% block content %}
 <div class="web__section__content section__content">
-    <h1 class="web__section__h1 section__h1 h1">Web-apps</h1>
-    <h2 class="web__section__h2 section__h2 h2">Smart & Fast</h2>
-
+    <h1 class="web__section__h1 section__h1 h1">{{ page.title }}</h1>
+    {% if page.introduction %}<p>{{ page.introduction }}</p>{% endif %}
     <div class="swiper-container">
         <div class="swiper-wrapper">
-            {% for app in apps %}
-                <!-- Slide -->
-                <div class="swiper-slide">
-                    {% if app.specific.mockup_design %}
-                        <img src="{{ app.specific.mockup_design.file.url }}" class="img--responsive mockup" alt="{{ app.title }}">
-                    {% endif %}
-                    <div class="slide-content">
-                        <h3 class="app-name">{{ app.title }}</h3>
-                        {% if app.specific.description %}
-                            <p class="app-description">
-                                {{ app.specific.description|linebreaks }}
-                                <br><br>
-                                <strong>Key Features:</strong>
-                                <ul>
-                                    <!-- Add logic for any specific features field -->
-                                    {% for feature in app.specific.features.all %}
-                                        <li>{{ feature }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </p>
-                        {% endif %}
-                        {% if app.specific.tech_stack.all %}
-                            <ul class="tech-stack">
-                                {% for tech in app.specific.tech_stack.all %}
-                                    <li>
-                                        {% if tech.logo %}
-                                            <img src="{{ tech.logo.url }}" alt="{{ tech.name }}" style="max-width: 35px;">
-                                        {% endif %}
-                                        {{ tech.name }} - {{ tech.description }}
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        {% endif %}
-                    </div>
-                </div>
+            {% for project in apps %}
+                {% include "website/partials/project_slide.html" with project=project only %}
+            {% empty %}
+                <p>{% trans "Projects coming soon" %}</p>
             {% endfor %}
         </div>
-
-        <!-- Swiper Navigation -->
         <div class="swiper-button-next"></div>
         <div class="swiper-button-prev"></div>
         <div class="swiper-pagination"></div>

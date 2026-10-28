@@ -1,0 +1,19 @@
+/* Center content without altering the original inner column width.
+   The legacy layout padded only its left side (16vw at mid-size desktops,
+   12vw at larger viewports), shifting Work and Studio content right.
+   Split that padding equally across both sides instead. */
+@media (min-width: 800px) and (max-width: 999.98px) {
+  #web .web__section__content,
+  #studio .studio__section__content {
+    padding-left: 8vw;
+    padding-right: 8vw;
+  }
+}
+
+@media (min-width: 1000px) {
+  #web .web__section__content,
+  #studio .studio__section__content {
+    padding-left: 6vw;
+    padding-right: 6vw;
+  }
+}

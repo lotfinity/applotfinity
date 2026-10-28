@@ -573,3 +573,6 @@ zstandard==0.25.0
 # The following packages are considered to be unsafe in a requirements file:
 # pip
 # setuptools
+
+gunicorn==26.2.0
+    # via -r requirements.in

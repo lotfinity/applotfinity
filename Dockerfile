@@ -1,31 +1,19 @@
-# Use official Python 3.11 base image
 FROM python:3.11-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    DJANGO_SETTINGS_MODULE=mysite.settings.prod
 
-# Set work directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
-    curl \
-    libsm6 \
-    libxext6 \
-    libxrender-dev \
+# Existing pinned dependencies include Pillow, lxml, libsass, and PostgreSQL drivers.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential libpq-dev curl libsm6 libxext6 libxrender-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install pipenv or pip-tools for managing dependencies (PEP compliant)
-RUN pip install --upgrade pip setuptools wheel
-
-# Copy project files
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app
 
-# Install Python dependencies
-RUN pip install -r requirements.txt
-
-# Default command (can be overridden)
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Static/media files are collected on startup and served by the reverse proxy.
+CMD ["gunicorn", "mysite.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "2"]

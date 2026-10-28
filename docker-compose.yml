@@ -1,25 +1,26 @@
-version: '3.11'
-
+# HTTPS reverse proxy is required before exposing this application publicly.
+# Gunicorn is intentionally bound only to the host's loopback interface.
 services:
   web:
     build: .
-    container_name: lotfinity
-    command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/app
+    restart: unless-stopped
+    command: >-
+      sh -c "python manage.py migrate --noinput &&
+             python manage.py collectstatic --noinput &&
+             exec gunicorn mysite.wsgi:application --bind 0.0.0.0:8000 --workers 2"
     ports:
-      - "55553:8000"
+      - "127.0.0.1:55553:8000"
     environment:
-      - PYTHONDONTWRITEBYTECODE=1
-      - PYTHONUNBUFFERED=1
+      DJANGO_SETTINGS_MODULE: mysite.settings.prod
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Set DJANGO_SECRET_KEY before deployment}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS:-hello-from.lotfinity.tech}
+      DJANGO_CSRF_TRUSTED_ORIGINS: ${DJANGO_CSRF_TRUSTED_ORIGINS:-https://hello-from.lotfinity.tech}
+      DJANGO_TRUST_PROXY_SSL_HEADER: ${DJANGO_TRUST_PROXY_SSL_HEADER:-0}
+      DJANGO_DB_PATH: /data/db.sqlite3
+      DJANGO_MEDIA_ROOT: /data/media
+      DJANGO_STATIC_ROOT: /data/static
+    volumes:
+      - lotfinity_data:/data
 
-# Optional: Add your database or cache service here later
-# Example:
-#  db:
-#    image: postgres:15
-#    environment:
-#      POSTGRES_USER: youruser
-#      POSTGRES_PASSWORD: yourpassword
-#      POSTGRES_DB: yourdb
-#    ports:
-#      - "5432:5432"
+volumes:
+  lotfinity_data:

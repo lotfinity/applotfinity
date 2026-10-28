@@ -399,3 +399,13 @@ cache/
 
 # Collected static files
 /static/
+
+# Local ASUS preview secrets and collected build output
+.preview_secret
+/preview_static/
+/.env
+/.env.*
+!/.env.example
+
+# Local-only preview editor credentials
+.preview_admin_password

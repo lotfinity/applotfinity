@@ -1,4 +1,4 @@
-{% load coderedcms_tags i18n static wagtailcore_tags wagtailimages_tags wagtailsettings_tags wagtailuserbar language_switcher %}
+{% load coderedcms_tags i18n static wagtailcore_tags wagtailimages_tags wagtailsettings_tags wagtailuserbar language_switcher portfolio %}
 
 <!DOCTYPE html>
 <html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://unpkg.com/splitting/dist/splitting.css" type="text/css">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/homepage-layout.css' %}">
 
     <meta name="theme-color" content="#151825">
 
@@ -362,106 +363,24 @@
             <h1 class="web__section__h1 section__h1 h1">{% trans "Web-apps" %}</h1>
             <h2 class="web__section__h2 section__h2 h2">{% trans "Smart & Fast : Click to Preview !" %}</h2>
 
+            {% get_portfolio_projects as portfolio_projects %}
             <div class="swiper-container">
                 <div class="swiper-wrapper">
-                    <!-- Slide 1 -->
-                    <div class="swiper-slide">
-                        <img src="{% static 'img/denti.webp' %}" class="img--responsive mockup" alt="DentiDelil International" data-url="https://dentidelil-international.com">
-                        <div class="slide-content">
-                            <h3 class="app-name">{% trans "DentiDelil International" %}</h3>
-                            <p class="app-description">
-                                {% trans "A state-of-the-art multilingual CMS-powered website designed to cater to international dental services." %}<br><br>
-                                <strong>{% trans "Key Features:" %}</strong>
-                                <ul>
-                                    <li>{% trans "Multilingual Support: Supports 13+ languages." %}</li>
-                                    <li>{% trans "AI-Powered Enhancements: Integrated OpenAI GPT-4o model and Azure Translator." %}</li>
-                                    <li>{% trans "Dynamic API Integrations: JotForm, Unsplash, and more." %}</li>
-                                </ul>
-                            </p>
-                            <ul class="tech-stack">
-                                <li><img src="{% static 'img/django.webp' %}" alt="Django" style="max-width: 35px;"> Django - Python web framework</li>
-                                <li><img src="{% static 'img/wagtail.webp' %}" alt="Wagtail" style="max-width: 35px;"> Wagtail - CMS built on Django</li>
-                                <li><img src="{% static 'img/postgresql.webp' %}" alt="PostgreSQL" style="max-width: 35px;"> PostgreSQL - Relational database</li>
-                                <li><img src="{% static 'img/openai.webp' %}" alt="OpenAI" style="max-width: 35px;"> OpenAI - AI solutions</li>
-                            </ul>
+                    {% for project in portfolio_projects %}
+                        {% include "website/partials/project_slide.html" with project=project only %}
+                    {% empty %}
+                        <div class="swiper-slide">
+                            <div class="slide-content">
+                                <h3 class="app-name">{% trans "Projects coming soon" %}</h3>
+                            </div>
                         </div>
-
-                    </div>
-
-                    <!-- Slide 2 -->
-                    <div class="swiper-slide">
-                        <img src="{% static 'img/app1.webp' %}" class="img--responsive mockup" alt="DentiDelil App" data-url="https://app.dentidelil-international.com">
-                        <div class="slide-content">
-                            <h3 class="app-name">{% trans "DentiDelil App" %}</h3>
-                            <p class="app-description">
-                                {% trans "A modern, all-in-one dashboard for beauty salon management." %}<br><br>
-                                <strong>{% trans "Key Features:" %}</strong>
-                                <ul>
-                                    <li>{% trans "Appointment Scheduling: Interactive calendar with reminders." %}</li>
-                                    <li>{% trans "Client Management: Profiles and treatment histories." %}</li>
-                                    <li>{% trans "Real-Time Analytics: Revenue, top services, and productivity tracking." %}</li>
-                                </ul>
-                            </p>
-                            <ul class="tech-stack">
-                                <li><img src="{% static 'img/django.webp' %}" alt="Django" style="max-width: 35px;"> Django - Python web framework</li>
-                                <li><img src="{% static 'img/react.webp' %}" alt="React" style="max-width: 35px;"> React - Frontend library</li>
-                                <li><img src="{% static 'img/postgresql.webp' %}" alt="PostgreSQL" style="max-width: 35px;"> PostgreSQL - Relational database</li>
-                            </ul>
-                        </div>
-                    </div>
-                                        <!-- Slide  -->
-
-                <div class="swiper-slide">
-                    <img src="{% static 'img/app2.webp' %}" class="img--responsive mockup" alt="Dental Management App" data-url="https://app.dentidelil-international.com">
-                    <div class="slide-content">
-                        <h3 class="app-name">{% trans "Dental Management App" %}</h3>
-                        <p class="app-description">
-                            {% trans "A comprehensive dental management solution." %}<br><br>
-                            <strong>{% trans "Key Features:" %}</strong>
-                            <ul>
-                                <li>{% trans "Patient Scheduling: Simplify appointment management for clinics." %}</li>
-                                <li>{% trans "Records Management: Secure and accessible patient records." %}</li>
-                                <li>{% trans "Financial Tracking: Monitor invoices, payments, and insurance claims." %}</li>
-                                <li>{% trans "Multilingual Support: Enable communication with patients from diverse backgrounds." %}</li>
-                            </ul>
-                        </p>
-                        <ul class="tech-stack">
-                            <li><img src="{% static 'img/django.webp' %}" alt="Django logo" style="max-width: 35px;"> Django - Python web framework</li>
-                            <li><img src="{% static 'img/wagtail.webp' %}" alt="Wagtail logo" style="max-width: 35px;"> Wagtail - CMS built on Django</li>
-                            <li><img src="{% static 'img/azure.webp' %}" alt="Azure Translator logo" style="max-width: 35px;"> Azure Translator - Real-time translation services</li>
-                        </ul>
-                    </div>
+                    {% endfor %}
                 </div>
-
-                                                            <!-- Slide  -->
-
-                    <div class="swiper-slide">
-                        <img src="{% static 'img/snn.webp' %}" class="img--responsive mockup" alt="Salon Nassnor Pro" data-url="https://salonnassnor.com">
-                        <div class="slide-content">
-                            <h3 class="app-name">{% trans "Salon Nassnor" %}</h3>
-                            <p class="app-description">
-                                {% trans "The pro version of Salon Nassnor, offering enhanced tools for beauty professionals." %}<br><br>
-                                <strong>{% trans "Key Features:" %}</strong>
-                                <ul>
-                                    <li>{% trans "Advanced Appointment System: Customizable bookings and reminders." %}</li>
-                                    <li>{% trans "Inventory Management: Track beauty product availability." %}</li>
-                                    <li>{% trans "Customer Relationship Management: Tools to engage and retain clients." %}</li>
-                                    <li>{% trans "Reporting Tools: Visualize revenue and staff productivity." %}</li>
-                                </ul>
-                            </p>
-                            <ul class="tech-stack">
-                                <li><img src="{% static 'img/django.webp' %}" alt="Django logo" style="max-width: 35px;"> Django - Python web framework</li>
-                                <li><img src="{% static 'img/wagtail.webp' %}" alt="Wagtail logo" style="max-width: 35px;"> Wagtail - CMS built on Django</li>
-                                <li><img src="{% static 'img/azure.webp' %}" alt="Azure Translator logo" style="max-width: 35px;"> Azure Translator - Real-time translation services</li>
-                            </ul>
-                        </div>
-                    </div>
 
                 <!-- Swiper Navigation -->
                 <div class="swiper-button-next"></div>
                 <div class="swiper-button-prev"></div>
                 <div class="swiper-pagination"></div>
-            </div>
             </div>
             <div class="web__section__legende section__legende">
                 <p class="web__section__legende_p section__legende__p legende">
