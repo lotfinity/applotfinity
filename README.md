@@ -329,3 +329,36 @@ normal case-study images until the optional fields are provided.
 Preview: `/en/projects/istanbulproptech/`. Test with `python manage.py test
 website.tests --settings=mysite.settings.preview` (with preview environment
 variables configured).
+
+### Low-power animated project case-study background (October 2026)
+
+Individual case-study pages (`website/templates/website/app_page.html`) now show
+an ambient **connected-nodes and electric-pulse network** over a dark blue/purple
+CSS atmosphere. The shared projects index and the animated homepage are not
+changed. The original project images, mobile/desktop mockups, Wagtail content,
+links and headings are retained. CSS panels add a subtle glass-like finish.
+
+The effect is deliberately built with **Canvas 2D and plain JavaScript**, not a
+second Three.js/WebGL renderer. There are no CDN dependencies, extra fonts,
+large images, or WebGL shaders. Source:
+`website/static/js/project-network.js` (about 8 KB uncompressed).
+
+Resource limits:
+
+- Nodes: 23 on narrow screens; at most 55 on desktop.
+- Connections: maximum 41 on mobile, 90 on desktop; pairs precomputed at resize.
+- Canvas pixel buffer: approximately 430,000 pixels on phones and 1.6 million
+  on desktops, even if the user has a very high-DPI or 4K display.
+- Animation: at most 18 FPS active on mobile and 24 FPS on desktop; **7 FPS idle**.
+- Electric sparks: one short segment roughly every 3–6 seconds.
+- **No drawing in hidden tabs**; static single-frame rendering for user-reduced
+  motion or browser Save-Data settings. The CSS backdrop remains if Canvas fails.
+- All graphics are `aria-hidden`, sit behind the content and never intercept
+  pointer or keyboard events.
+
+To tune color, intensity or panel styling, edit the `.project-detail` and
+`.project-energy` rules at the end of `project-pages.css`; to adjust network
+node brightness or spark frequency, use `project-network.js`. Browser tests
+verify actual draw counts, hidden-tab pausing, and that the project index does
+not load the background. The optimization was measured in headless Chrome on
+ASUS and should be confirmed visually on real Android browsers before release.

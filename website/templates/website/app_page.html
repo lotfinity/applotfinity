@@ -6,9 +6,10 @@
     <title>{{ page.title }} | Lotfinity Case Study</title>
     <meta name="description" content="{{ page.description|truncatechars:180 }}">
     <link rel="icon" href="{% static 'img/lotfinity.png' %}">
-    <link rel="stylesheet" href="{% static 'css/project-pages.css' %}">
+    <link rel="stylesheet" href="{% static 'css/project-pages.css' %}?v=network-1">
 </head>
-<body>
+<body class="project-detail">
+<div class="project-energy" data-project-network aria-hidden="true"><canvas class="project-energy__canvas"></canvas></div>
 <header class="site-header"><a class="brand" href="/en/">Lotfinity<span class="brand-mark">/</span></a>
     <nav><a href="/en/projects/">All projects</a><a href="/en/">Homepage</a></nav>
 </header>
@@ -38,4 +39,5 @@
     <a class="back-link" href="/en/projects/">← See other projects</a>
 </main>
 <footer class="site-footer">Lotfinity · Investigate, integrate, build. <a href="/en/">Back to homepage ↑</a></footer>
+<script defer src="{% static 'js/project-network.js' %}?v=network-1"></script>
 </body></html>
