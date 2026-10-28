@@ -240,6 +240,10 @@ class AppPage(Page):
         "wagtailimages.Image", null=True, blank=True, on_delete=models.SET_NULL,
         related_name="+", help_text="Optional mobile screenshot for the CSS phone showcase.",
     )
+    device_mobile_secondary_image = models.ForeignKey(
+        "wagtailimages.Image", null=True, blank=True, on_delete=models.SET_NULL,
+        related_name="+", help_text="Optional second genuine mobile screenshot for the device gallery.",
+    )
     description = models.TextField(blank=True, verbose_name="App Description")
     external_url = models.URLField(
         blank=True, help_text="Optional live demo or external project website."
@@ -290,6 +294,7 @@ class AppPage(Page):
         FieldPanel("mockup_design"),
         FieldPanel("device_desktop_image"),
         FieldPanel("device_mobile_image"),
+        FieldPanel("device_mobile_secondary_image"),
         FieldPanel("description"),
         FieldPanel("external_url"),
         FieldPanel("source_url"),

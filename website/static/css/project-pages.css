@@ -105,3 +105,13 @@ body.project-detail::after {
 .case-tile .case-cover img{transition:transform .28s ease;object-fit:cover}
 .case-tile .case-cover:hover img{transform:scale(1.025)}
 @media(prefers-reduced-motion:reduce){.case-tile .case-cover img{transition:none}}
+
+/* Optional second real mobile screen for native apps without a desktop UI. */
+.device-showcase__devices--mobile-only{gap:clamp(16px,5vw,42px);padding:10px clamp(10px,5vw,40px);}
+.device-showcase__devices--mobile-only .device-phone{flex:0 1 255px;width:min(43%,255px);margin:0 !important;}
+.device-showcase__devices--mobile-only .device-phone--secondary{transform:translateY(18px);}
+@media(max-width:550px){
+ .device-showcase__devices--mobile-only{gap:clamp(8px,3vw,19px);padding:0 4px;}
+ .device-showcase__devices--mobile-only .device-phone{flex:0 1 50%;width:47%;margin:0 !important;}
+ .device-showcase__devices--mobile-only .device-phone--secondary{transform:translateY(12px);}
+}

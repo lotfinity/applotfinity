@@ -381,3 +381,11 @@ preview on ASUS uses **historical July 18 evidence**, prominently labelled
 as archival, and supplies verified desktop/mobile Chrome captures to Wagtail's
 `device_*_image` fields. The promotional `banner_image` is still separate and
 unset. See `docs/portfolio-art-direction.md` for provenance and limitations.
+
+**LotoT native Android showcase (Oct 29, 2026):** original `com.lotot.android`
+screenshots captured through ADB on a connected Samsung phone. The
+charcoal/lime banner and two CSS phone mockups are stored in Wagtail. No
+vehicle adapter was connected, so no real ECU data was recorded. The
+second optional mobile screenshot field (`device_mobile_secondary_image`)
+allows a truthful two-screen gallery without manufacturing a desktop UI.
+See `docs/portfolio-art-direction.md` for provenance and source paths.
