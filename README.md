@@ -399,3 +399,11 @@ outside Git. The asset generator/import scripts live in `scripts/`; original
 captures and final WebPs live under `media/`, included in CMS backups.
 These are offline demos, **not captured live WLED hardware**. See
 `docs/portfolio-art-direction.md` for the reproducible workflow.
+
+**IstanbulPropTech (Oct 29, 2026):** project 05 now has a 1600×900
+pine/emerald mapping banner in Wagtail, composed from the pre-existing
+owner-supplied desktop/mobile UI reference images (kept untouched in their
+separate mockup slots). These UI references were not independently verified
+against a running application. The reproducible generator is
+`scripts/build_istanbulproptech_banner.py`, and generated media remains outside
+Git under `media/design_exports/`. See `docs/portfolio-art-direction.md`.
