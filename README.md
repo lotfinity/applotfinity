@@ -362,3 +362,16 @@ node brightness or spark frequency, use `project-network.js`. Browser tests
 verify actual draw counts, hidden-tab pausing, and that the project index does
 not load the background. The optimization was measured in headless Chrome on
 ASUS and should be confirmed visually on real Android browsers before release.
+
+### Portfolio banners and genuine device mockups
+
+Each Wagtail `AppPage` now has an independently editable **Banner image** in
+addition to the original project visual and device screenshots. The homepage
+carousel and numbered `/en/projects/` grid prefer the banner, falling back to
+the original mockup or a text cover. Detail pages show **genuine screenshots**
+inside optional CSS laptop/phone frames, not invented app dashboards. Featured
+numbers are derived from Wagtail ordering; archive projects remain separate.
+
+See [`docs/portfolio-art-direction.md`](docs/portfolio-art-direction.md) for the
+six-project visual brief and the repeatable Ohmlet banner workflow. The v1 Ohmlet
+WebP and CMS image are stored on ASUS under `media/`, not in Git.

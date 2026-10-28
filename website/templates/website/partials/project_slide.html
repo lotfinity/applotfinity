@@ -1,7 +1,11 @@
 {% load wagtailimages_tags i18n %}
 <div class="swiper-slide project-card">
-    {% if project.mockup_design %}
-        {% image project.mockup_design width-960 format-webp as mockup %}
+    {% if project.banner_image or project.mockup_design %}
+        {% if project.banner_image %}
+            {% image project.banner_image width-960 format-webp as mockup %}
+        {% else %}
+            {% image project.mockup_design width-960 format-webp as mockup %}
+        {% endif %}
         {% if project.source_url %}
             <a href="{% if project.external_url %}{{ project.external_url }}{% else %}{{ project.url }}{% endif %}" class="project-visual-link" {% if project.external_url %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{% if project.external_url %}Open live {{ project.title }} application{% else %}Read {{ project.title }} case study{% endif %}">
                 <img src="{{ mockup.url }}" class="img--responsive project-image"

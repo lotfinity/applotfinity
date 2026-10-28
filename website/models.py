@@ -220,6 +220,10 @@ class AppPage(Page):
     """
     A page representing an individual app.
     """
+    banner_image = models.ForeignKey(
+        "wagtailimages.Image", null=True, blank=True, on_delete=models.SET_NULL,
+        related_name="+", help_text="Designed project banner; keep screenshots in Mockup Design or device fields.",
+    )
     mockup_design = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -282,6 +286,7 @@ class AppPage(Page):
     )
 
     content_panels = Page.content_panels + [
+        FieldPanel("banner_image"),
         FieldPanel("mockup_design"),
         FieldPanel("device_desktop_image"),
         FieldPanel("device_mobile_image"),
@@ -333,6 +338,9 @@ class AppsIndexPage(Page):
         context = super().get_context(request)
         apps = self.get_apps()
         context["apps"] = apps
+        context["featured_apps"] = [app for app in apps if app.show_on_homepage]
+        context["archive_apps"] = [app for app in apps if not app.show_on_homepage]
+        context["featured_count"] = len(context["featured_apps"])
         return context
 
 

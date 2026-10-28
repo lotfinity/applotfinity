@@ -97,3 +97,11 @@ body.project-detail::after {
 @media (prefers-reduced-motion: reduce) {
     .project-detail .primary-action, .project-detail .secondary-action { transition: none; }
 }
+
+/* Numbered featured-project cards with separate editorial banners. */
+.case-tile__number{display:flex;gap:8px;align-items:baseline;font-size:.85rem;font-weight:800;letter-spacing:.13em;color:#90e3ef;margin:0 0 12px}
+.case-tile__number span{font-size:.7rem;color:#7095ad;letter-spacing:.1em}
+.case-tile:has(.case-cover img) .case-cover{background:#081626}
+.case-tile .case-cover img{transition:transform .28s ease;object-fit:cover}
+.case-tile .case-cover:hover img{transform:scale(1.025)}
+@media(prefers-reduced-motion:reduce){.case-tile .case-cover img{transition:none}}

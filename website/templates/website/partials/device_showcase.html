@@ -1,6 +1,6 @@
 {% load wagtailimages_tags %}
 <section class="device-showcase" aria-label="{{ project.title }} desktop and mobile previews">
-    <div class="device-showcase__heading"><span>REAL UI · RESPONSIVE DESIGN</span><h2>One project. Every screen.</h2></div>
+    <div class="device-showcase__heading"><span>AUTHENTIC APPLICATION SCREENSHOTS</span><h2>{% if project.device_desktop_image and project.device_mobile_image %}One project. Every screen.{% elif project.device_desktop_image %}Inside the desktop experience.{% else %}Inside the mobile experience.{% endif %}</h2></div>
     <div class="device-showcase__devices">
         {% if project.device_desktop_image %}
         <figure class="device-laptop">

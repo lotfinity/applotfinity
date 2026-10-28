@@ -20,10 +20,12 @@
     <section aria-labelledby="featured-heading">
         <div class="section-header"><h2 id="featured-heading">Selected builds</h2><span>Software / devices / intelligence</span></div>
         <div class="case-grid">
-            {% for project in apps %}{% if project.show_on_homepage %}
+            {% for project in featured_apps %}
             <article class="case-tile">
+                <span class="case-tile__number">{{ forloop.counter|stringformat:"02d" }} <span>/ {{ featured_count|stringformat:"02d" }}</span></span>
                 <a class="case-cover" href="{{ project.url }}" aria-label="Read {{ project.title }}">
-                    {% if project.mockup_design %}{% image project.mockup_design width-900 format-webp as preview %}<img src="{{ preview.url }}" width="{{ preview.width }}" height="{{ preview.height }}" alt="Screenshot of {{ project.title }}" loading="lazy">
+                    {% if project.banner_image %}{% image project.banner_image fill-900x506 format-webp as preview %}<img src="{{ preview.url }}" width="{{ preview.width }}" height="{{ preview.height }}" alt="Designed banner for {{ project.title }}" loading="lazy">
+                    {% elif project.mockup_design %}{% image project.mockup_design width-900 format-webp as preview %}<img src="{{ preview.url }}" width="{{ preview.width }}" height="{{ preview.height }}" alt="Screenshot of {{ project.title }}" loading="lazy">
                     {% else %}<span class="case-cover__code" aria-hidden="true">&lt;/&gt;</span><span class="case-cover__text">{{ project.focus_area }}</span>{% endif %}
                 </a>
                 <div class="case-meta"><span>{{ project.focus_area }}</span><span class="stage">{{ project.get_project_stage_display }}</span></div>
@@ -31,16 +33,16 @@
                 <p>{{ project.description }}</p>
                 <div class="case-actions"><a href="{{ project.url }}">Read case study ↗</a>{% if project.external_url %}<a href="{{ project.external_url }}" rel="noopener noreferrer" target="_blank">{% if project.source_url %}Launch live app{% else %}Visit website{% endif %} ↗</a>{% endif %}{% if project.source_url %}<a href="{{ project.source_url }}" rel="noopener noreferrer" target="_blank">Public source ↗</a>{% endif %}</div>
             </article>
-            {% endif %}{% endfor %}
+            {% endfor %}
         </div>
     </section>
     <section aria-labelledby="archive-heading" class="archive-section">
         <div class="section-header"><h2 id="archive-heading">Earlier website work</h2><span>Historical portfolio entries</span></div>
         <p class="archive-note">These entries are retained from the earlier portfolio and are not presented as newly verified active deployments.</p>
         <div class="archive-list">
-            {% for project in apps %}{% if not project.show_on_homepage %}
+            {% for project in archive_apps %}
                 <a href="{{ project.url }}"><strong>{{ project.title }}</strong><span>{{ project.get_project_stage_display }} ↗</span></a>
-            {% endif %}{% endfor %}
+            {% endfor %}
         </div>
     </section>
 </main>
