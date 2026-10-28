@@ -1,0 +1,26 @@
+{% load wagtailimages_tags %}
+<section class="device-showcase" aria-label="{{ project.title }} desktop and mobile previews">
+    <div class="device-showcase__heading"><span>REAL UI · RESPONSIVE DESIGN</span><h2>One project. Every screen.</h2></div>
+    <div class="device-showcase__devices">
+        {% if project.device_desktop_image %}
+        <figure class="device-laptop">
+            <div class="device-laptop__lid"><div class="device-laptop__camera" aria-hidden="true"></div>
+                {% image project.device_desktop_image width-1200 format-webp as desktop %}
+                <img src="{{ desktop.url }}" width="{{ desktop.width }}" height="{{ desktop.height }}" loading="lazy" alt="Desktop screenshot of {{ project.title }}">
+            </div>
+            <div class="device-laptop__base" aria-hidden="true"><span></span></div>
+            <figcaption>Desktop experience</figcaption>
+        </figure>
+        {% endif %}
+        {% if project.device_mobile_image %}
+        <figure class="device-phone">
+            <div class="device-phone__body"><div class="device-phone__screen">
+                {% image project.device_mobile_image width-520 format-webp as phone %}
+                <img src="{{ phone.url }}" width="{{ phone.width }}" height="{{ phone.height }}" loading="lazy" alt="Mobile screenshot of {{ project.title }}">
+            </div><span class="device-phone__island" aria-hidden="true"></span><span class="device-phone__gesture" aria-hidden="true"></span></div>
+            <figcaption>Mobile experience</figcaption>
+        </figure>
+        {% endif %}
+    </div>
+    <p class="device-showcase__note">Actual screenshots presented in lightweight, CSS-only device frames.</p>
+</section>

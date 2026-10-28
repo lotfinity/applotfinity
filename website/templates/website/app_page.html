@@ -21,7 +21,9 @@
         {% if page.source_url %}<a class="primary-action" href="{{ page.source_url }}" rel="noopener noreferrer" target="_blank">Explore public source ↗</a>{% endif %}
         {% if page.external_url %}<a class="secondary-action" href="{{ page.external_url }}" rel="noopener noreferrer" target="_blank">{% if page.source_url %}Launch live app{% else %}Visit project website{% endif %} ↗</a>{% endif %}
     </div>
-    {% if page.mockup_design %}
+    {% if page.device_desktop_image or page.device_mobile_image %}
+        {% include "website/partials/device_showcase.html" with project=page only %}
+    {% elif page.mockup_design %}
         {% image page.mockup_design width-1200 format-webp as screenshot %}
         <figure class="detail-figure"><img src="{{ screenshot.url }}" width="{{ screenshot.width }}" height="{{ screenshot.height }}" alt="{{ page.title }} project visual" loading="lazy"><figcaption>Project visual</figcaption></figure>
     {% endif %}

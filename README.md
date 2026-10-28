@@ -309,3 +309,23 @@ The Ohmlet Wagtail entry has a distinct **Launch live app** link and a separate
 that URL is present; the case study remains independently accessible.
 The curator seeds this URL for new databases but never overwrites later Wagtail
 editor changes to existing project pages.
+
+### Reusable CSS laptop and phone mockups
+
+`AppPage` supports two optional Wagtail image fields:
+**Device desktop image** and **Device mobile image**. When either is populated,
+`website/partials/device_showcase.html` renders a responsive, pure CSS laptop
+and/or phone frame. There is no React runtime, WebGL or extra client-side JS on
+the case-study pages. Browser image renditions are served by Wagtail.
+
+IstanbulPropTech is the first example, using the actual two screenshots supplied
+by the site owner on 28 October 2026, optimized as WebP assets. Its Wagtail
+project page displays both frames. Future projects can reuse the same feature
+simply by attaching their screenshots in **Wagtail Pages → Projects → [project]
+→ Device desktop image / Device mobile image**. The original image fields can
+be changed without editing HTML or CSS. Other projects keep their existing
+normal case-study images until the optional fields are provided.
+
+Preview: `/en/projects/istanbulproptech/`. Test with `python manage.py test
+website.tests --settings=mysite.settings.preview` (with preview environment
+variables configured).
