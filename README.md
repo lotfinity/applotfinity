@@ -200,3 +200,36 @@ media files, and cache output are ignored by Git. Branch
 Production page caching is intentionally disabled for now so the site-wide
 homepage settings appear immediately after editor saves. Reintroduce caching
 only with explicit invalidation when homepage settings change.
+
+### Energy-saving WebGL / animations (October 2026)
+
+The original 550 KB `website/static/js/main.js` bundle contains an animated
+Three.js shader, GSAP and the smooth-scroll engine. It used to run a full-window
+GPU render on **every requestAnimationFrame**, even while the page was idle on
+mobile. This caused unusually high CPU/GPU load, hot phones and laptop fans.
+
+To preserve the same 3D background without keeping the GPU at full load:
+
+- Cap WebGL to approximately **12.5 FPS on desktop** and **5.6 FPS on touch**.
+- Use a lower GPU drawing-buffer resolution (0.85x desktop, 0.6x touch) and
+  turn off multisampling on touch screens. The CSS canvas still fills the page.
+- Pause WebGL drawing after **3.8 seconds without input**, and while the page
+  is hidden. Reactivate on scroll, pointer movement, touch, or keyboard input.
+- With `prefers-reduced-motion: reduce` or Save-Data, draw the scene once.
+- Remove the second externally loaded GSAP/ScrollTrigger runtime. Skill-ring
+  progress now uses a native IntersectionObserver and a CSS transition when
+  visible; it resets when scrolled out of view.
+
+The changes are a small, exact-match patch to the **existing minified bundle**.
+`scripts/optimize_webgl.py` documents the modification and is deliberately
+one-shot, refusing to run on an already-patched or incompatible file. If you
+replace/rebuild the bundle in the future, reapply and test this optimization
+rather than reverting to the unbounded render loop. The `eco-2` query string
+on `main.js` refreshes existing browser caches.
+
+The browser profiling used headless Chrome on ASUS with software rendering:
+previously about **7.6 seconds of browser task time over 7.8 seconds**, and
+with the capped/idle renderer **no draw calls while idle** and ~0.5 seconds
+of task time over a subsequent 4 seconds. These are local reproduction results,
+**not measurements of a visitor's actual phone**. In the preview we verified
+that scrolling, the project carousel, and progress circles still work.
