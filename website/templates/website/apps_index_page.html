@@ -6,9 +6,13 @@
     <title>Selected Projects & Case Studies | Lotfinity</title>
     <meta name="description" content="A curated selection of real software, systems and hardware projects. Explore public source repositories, case studies and development stages.">
     <link rel="icon" href="{% static 'img/lotfinity.png' %}">
-    <link rel="stylesheet" href="{% static 'css/project-pages.css' %}">
+    <link rel="stylesheet" href="{% static 'css/project-pages.css' %}?v=letter-glitch-1">
 </head>
-<body>
+<body class="gallery-page">
+<div class="gallery-letter-glitch" data-letter-glitch aria-hidden="true">
+    <canvas class="gallery-letter-glitch__canvas"></canvas>
+    <div class="gallery-letter-glitch__vignette"></div>
+</div>
 <header class="site-header"><a class="brand" href="/en/">Lotfinity<span class="brand-mark">/</span></a>
     <nav><a href="/en/">Homepage</a><a href="https://github.com/lotfinity" rel="noopener noreferrer" target="_blank">GitHub ↗</a></nav>
 </header>
@@ -47,4 +51,5 @@
     </section>
 </main>
 <footer class="site-footer">Lotfinity · Investigate, integrate, build. <a href="/en/">Back to homepage ↑</a></footer>
+<script defer src="{% static 'js/gallery-letter-glitch.js' %}?v=2"></script>
 </body></html>

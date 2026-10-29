@@ -425,3 +425,36 @@ desktop and mobile browser screenshots, and added as `banner_image` without
 replacing the authentic device mockups. Regenerate with
 `scripts/build_pricebridge_banner.py`; see `docs/portfolio-art-direction.md`.
 Desktop/mobile gallery and homepage carousel were verified in Chromium.
+
+### React Bits-inspired Letter Glitch — numbered projects gallery
+
+The `/en/projects/` index has its own **Letter Glitch** background, adapted
+from the [React Bits effect](https://reactbits.dev/c/backgrounds/letter-glitch)
+without bringing a React build or WebGL runtime into the Wagtail templates.
+The custom Canvas2D effect lives at `website/static/js/gallery-letter-glitch.js`;
+the gallery-only markup is `website/templates/website/apps_index_page.html` and
+the visual layers are in `website/static/css/project-pages.css`.
+It is an independent implementation inspired by React Bits by David Haz
+([source/license](https://github.com/DavidHDev/react-bits), MIT + Commons Clause).
+
+The background uses a dark green/cyan/blue letter field, smooth color flashes,
+pointer stirring, short click scrambling and edge vignette; all elements are
+`aria-hidden` and have `pointer-events: none` so the real links remain usable.
+It does not affect the homepage or individual case-study backgrounds.
+The site remains plain Django/Wagtail with no new npm dependencies or CDN.
+
+**Tuning**: adjust `colors`, `cellW`/`cellH` base spacing, `count` in `scramble`,
+`glitch` timing and the two `fps` budgets in the JS, and the `.gallery-letter-glitch`
+opacity / vignette in CSS. The renderer is intentionally capped at ~3,200
+letters on desktops and 800 on phones and ~1.25 MP of backing raster.
+Desktop runs at a maximum 24 FPS during interaction / 10 FPS idle; phones
+15 FPS active / 6 FPS idle; hidden tabs stop completely. Reduced-motion or
+browser Save-Data settings display a single static frame. These are budgets,
+not guaranteed frame rates.
+
+QA: automated tests verify route isolation and performance policies. Headless
+Chrome confirms that the desktop/mobile effect is visible, does not trigger
+errors/overflow, and respects reduced motion. 4K tests reduced the first
+version's ~18,000 glyphs / 1.75 seconds CPU task time over 4.4 seconds to
+~3,200 glyphs / 0.35 seconds task time over 3.1 seconds. These are headless
+browser measurements on ASUS, not measured temperatures on the user's devices.

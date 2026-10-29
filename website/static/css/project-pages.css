@@ -115,3 +115,56 @@ body.project-detail::after {
  .device-showcase__devices--mobile-only .device-phone{flex:0 1 50%;width:47%;margin:0 !important;}
  .device-showcase__devices--mobile-only .device-phone--secondary{transform:translateY(12px);}
 }
+
+/* Numbered gallery: Letter Glitch, adapted to Wagtail from the React Bits idea.
+   Fixed Canvas2D background, never intercepts links or pointer input. */
+body.gallery-page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+  background: #07101e;
+}
+.gallery-letter-glitch {
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+  background: radial-gradient(ellipse at 67% 24%, #0f2930 0%, #091726 48%, #070e1b 100%);
+}
+.gallery-letter-glitch__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: .94;
+}
+.gallery-letter-glitch__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 25%, rgba(4, 9, 19, .67) 100%),
+    linear-gradient(90deg, rgba(7, 14, 27, .28), transparent 20%, transparent 80%, rgba(7, 14, 27, .29));
+}
+.gallery-page > .site-header,
+.gallery-page > .page-wrap,
+.gallery-page > .site-footer {
+  position: relative;
+  z-index: 1;
+}
+.gallery-page .page-title,
+.gallery-page .section-header h2 {
+  text-shadow: 0 2px 22px rgba(5, 13, 23, .75);
+}
+.gallery-page .case-tile {
+  background: linear-gradient(145deg, rgba(23, 39, 61, .92), rgba(9, 18, 34, .93));
+  border-color: rgba(165, 215, 239, .22);
+}
+.gallery-page .archive-list a {
+  background: rgba(10, 20, 37, .91);
+}
+@media (max-width: 700px) {
+  .gallery-letter-glitch__canvas { opacity: .76; }
+  .gallery-letter-glitch__vignette { background: radial-gradient(ellipse at center, transparent 30%, rgba(5, 11, 22, .74)); }
+}
