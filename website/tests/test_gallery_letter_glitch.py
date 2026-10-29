@@ -57,3 +57,29 @@ class GalleryLetterGlitchTests(TestCase):
         self.assertIn('.gallery-letter-glitch {', css)
         self.assertIn('pointer-events: none;', css)
         self.assertIn('.gallery-page > .page-wrap', css)
+
+    def test_gallery_editor_can_set_custom_phrases_without_script_injection(self):
+        import json
+        import re
+
+        index = AppsIndexPage.objects.get(slug='projects')
+        editor_value = 'RESEARCH / BUILD\nCONNECT EVERY LAYER\n</script><script>alert(1)</script>'
+        index.glitch_messages = editor_value
+        index.save_revision().publish()
+        response = self.client.get('/en/projects/')
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        match = re.search(
+            r'<script id="gallery-glitch-messages" type="application/json">(.*?)</script>',
+            html,
+        )
+        self.assertIsNotNone(match)
+        self.assertEqual(json.loads(match.group(1)), editor_value)
+        self.assertNotIn('</script><script>alert(1)', html)
+        self.assertIn(r'\u003C/script\u003E', match.group(1))
+
+    def test_wagtail_editor_has_message_field(self):
+        self.assertIn('glitch_messages', [
+            getattr(panel, 'field_name', None)
+            for panel in AppsIndexPage.content_panels
+        ])

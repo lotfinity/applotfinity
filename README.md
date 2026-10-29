@@ -458,3 +458,29 @@ errors/overflow, and respects reduced motion. 4K tests reduced the first
 version's ~18,000 glyphs / 1.75 seconds CPU task time over 4.4 seconds to
 ~3,200 glyphs / 0.35 seconds task time over 3.1 seconds. These are headless
 browser measurements on ASUS, not measured temperatures on the user's devices.
+
+### Hidden words inside the gallery Letter Glitch (October 29, 2026)
+
+The numbered projects gallery now occasionally **decodes real phrases from its
+random letter grid**, holds them and then dissolves them back into glitches.
+Phrases are **editable in Wagtail**, not baked into the JavaScript: open
+`/admin/` → Pages → **Projects** → Edit → **Glitch messages**. Enter one
+short phrase per line (up to eight; ASCII letters, numbers, spaces and
+basic punctuation); leave the field empty to disable phrase reveals.
+
+The current defaults are `LOTFINITY`, `CONNECT THE PIECES`, `BUILD / INTEGRATE`
+and `SOFTWARE + HARDWARE`. Each phrase starts after a brief delay, decodes
+letter-by-letter (~1.2 seconds), remains visible (~2.85 seconds), fades over
+~1.15 seconds, and then gives way to another after ~1.55 seconds. On phones,
+longer phrases wrap across up to three lines within dedicated whitespace
+above the selected-builds heading. On desktops, the text appears in the open
+upper-right portion of the letter field. The glyph field continues to run at
+the existing low frame-rate budget. Motion-reduced devices show a static first
+phrase, while hidden tabs pause rendering entirely.
+
+Implementation is in `website/models.py` (`AppsIndexPage.glitch_messages`),
+the safe Django `json_script` binding in `apps_index_page.html`, and
+`website/static/js/gallery-letter-glitch.js`. The content is treated as
+plain text (never evaluated as HTML), and previous interactive card behavior
+is unchanged. The field was introduced in migration
+`website/migrations/0010_appsindexpage_glitch_messages.py`.

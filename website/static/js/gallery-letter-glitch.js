@@ -19,7 +19,18 @@
   const reduce = () => media.matches || saveData;
   const colors = ['#2b4539', '#61dca3', '#61b3dc', '#8addf3'];
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*+-=[]{}<>/';
-  const stats = { frames: 0, glitches: 0, letters: 0, reduced: reduce(), running: false };
+  // Editors can change the exact phrases in the Wagtail Projects page settings.
+  // Django's json_script filter encodes this safely; nothing is rendered as HTML.
+  const config = document.getElementById('gallery-glitch-messages');
+  let rawMessages = '';
+  try { rawMessages = JSON.parse(config?.textContent || '""'); } catch { /* Empty field. */ }
+  const messages = String(rawMessages).split(/\r?\n/)
+    .map(s => s.toUpperCase().replace(/[^A-Z0-9 .,+\-/?!&]/g, '').replace(/\s+/g, ' ').trim().slice(0, 58))
+    .filter(Boolean).slice(0, 8);
+  const stats = {
+    frames: 0, glitches: 0, letters: 0, reduced: reduce(), running: false,
+    phrases: messages.length, activeMessage: null, messagesShown: 0,
+  };
   window.__lotfinityLetterGlitch = stats;
 
   let width = 0;
@@ -38,6 +49,14 @@
   let burst = null;
   let running = false;
   let randomSeed = 0x91d3a6b;
+  let messageIndex = 0;
+  let transmission = null;
+  let nextTransmission = performance.now() + 1350;
+  const decodeMs = 1200;
+  const holdMs = 2850;
+  const fadeMs = 1150;
+  const totalMs = decodeMs + holdMs + fadeMs;
+
 
   const rand = () => {
     randomSeed ^= randomSeed << 13;
@@ -84,6 +103,80 @@
     cursor = null;
     burst = null;
     lastChange = 0;
+    transmission = null;
+    nextTransmission = performance.now() + 1350;
+  }
+
+  function phraseLines(text) {
+    const maxLen = Math.max(7, Math.min(columns - 4, mobile ? 16 : 22));
+    const words = text.split(' ');
+    const lines = [];
+    let line = '';
+    for (const word of words) {
+      if (line && (line + ' ' + word).length > maxLen) {
+        lines.push(line);
+        line = '';
+      }
+      if (word.length > maxLen) {
+        if (line) { lines.push(line); line = ''; }
+        for (let i = 0; i < word.length; i += maxLen) lines.push(word.slice(i, i + maxLen));
+      } else {
+        line = line ? `${line} ${word}` : word;
+      }
+    }
+    if (line) lines.push(line);
+    return lines.slice(0, mobile ? 3 : 2);
+  }
+
+  function revealMessage(time, fixed = false) {
+    if (!messages.length) return;
+    const text = messages[messageIndex % messages.length];
+    messageIndex++;
+    const lines = phraseLines(text);
+    // Right-hand open space on desktop; mobile messages remain centered.
+    const row = mobile
+      ? Math.max(2, Math.min(rows - lines.length - 2, Math.floor(rows * .74)))
+      : Math.max(2, Math.min(rows - lines.length - 2, Math.floor(rows * .21)));
+    const cells = new Map();
+    for (let r = 0; r < lines.length; r++) {
+      const line = lines[r];
+      const origin = mobile
+        ? Math.max(1, Math.floor((columns - line.length) / 2))
+        : Math.max(1, Math.min(columns - line.length - 2, Math.floor(columns * .61)));
+      for (let i = 0; i < line.length; i++) {
+        const index = (row + r) * columns + origin + i;
+        if (index < 0 || index >= letters.length) continue;
+        cells.set(index, { glyph: line[i], delay: (r * 130) + (i * 57) });
+      }
+    }
+    transmission = { text, cells, started: fixed ? time - decodeMs - 100 : time, fixed };
+    stats.activeMessage = text;
+    stats.messagePosition = { row, lines, columns };
+    stats.messagesShown++;
+  }
+
+  function updateTransmission(now) {
+    if (!messages.length) return;
+    if (reduce()) {
+      if (!transmission) revealMessage(now, true);
+      else {
+        transmission.fixed = true;
+        transmission.started = now - decodeMs - 100;
+      }
+      return;
+    }
+    if (transmission && now - transmission.started >= totalMs) {
+      // Send the revealed text back into the regular matrix.
+      for (const index of transmission.cells.keys()) {
+        letters[index].glyph = char();
+        letters[index].flash = 1;
+      }
+      transmission = null;
+      stats.activeMessage = null;
+      stats.messagePosition = null;
+      nextTransmission = now + 1550;
+    }
+    if (!transmission && now >= nextTransmission) revealMessage(now);
   }
 
   function scramble(time) {
@@ -101,6 +194,7 @@
       letter.flash = 1;
       stats.glitches++;
     }
+    updateTransmission(time);
     // Proximity interaction, attenuated and bounded to avoid large redraw cost.
     if (cursor && time - lastInput < 900 && rand() < .7) {
       const col = Math.round(cursor.x / cellW);
@@ -132,6 +226,9 @@
 
   function draw() {
     ctx.clearRect(0, 0, width, height);
+    const age = transmission ? performance.now() - transmission.started : 0;
+    const fading = !transmission || transmission.fixed ? 1
+      : Math.min(1, Math.max(0, (totalMs - age) / fadeMs));
     // A single fillText per glyph, with a restrained dark teal base palette.
     // Bright flashes are short-lived and never obscure interactive controls.
     for (let index = 0; index < letters.length; index++) {
@@ -146,7 +243,24 @@
         ctx.globalAlpha = letter.strength;
       }
       ctx.fillStyle = letter.color;
-      ctx.fillText(letter.glyph, x, y);
+      const fixed = transmission?.cells.get(index);
+      if (fixed && (transmission.fixed || age >= fixed.delay)) {
+        const decoded = transmission.fixed || age > decodeMs + fixed.delay
+          || Math.random() > 1 - Math.max(0, (age - fixed.delay) / decodeMs);
+        ctx.fillStyle = '#eefff5';
+        ctx.globalAlpha = Math.min(1, (.60 + .40 * fading) * fading);
+        ctx.shadowColor = '#65ffbf';
+        ctx.shadowBlur = mobile ? 16 : 17;
+        ctx.fillText(decoded ? fixed.glyph : letter.glyph, x, y);
+        if (decoded) {
+          ctx.lineWidth = .45;
+          ctx.strokeStyle = '#b8fff0';
+          ctx.strokeText(fixed.glyph, x, y);
+        }
+        ctx.shadowBlur = 0;
+      } else {
+        ctx.fillText(letter.glyph, x, y);
+      }
     }
     ctx.globalAlpha = 1;
     stats.frames++;
@@ -162,6 +276,7 @@
   function tick() {
     if (!running || document.hidden) return;
     const now = performance.now();
+    updateTransmission(now);
     scramble(now);
     draw();
     schedule();
@@ -180,6 +295,7 @@
     running = true;
     stats.running = true;
     stats.reduced = reduce();
+    updateTransmission(performance.now());
     scramble(performance.now());
     draw();
     if (reduce()) { stop(); return; }

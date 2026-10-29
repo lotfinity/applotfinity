@@ -315,6 +315,13 @@ class AppsIndexPage(Page):
     An index page listing all apps.
     """
     introduction = models.TextField(help_text="Text to describe the page", blank=True)
+    glitch_messages = models.TextField(
+        default="LOTFINITY\nCONNECT THE PIECES\nBUILD / INTEGRATE\nSOFTWARE + HARDWARE",
+        blank=True,
+        help_text=("One short phrase per line, revealed within the gallery's letter-glitch "
+                   "background. Up to 8 phrases; clear the field to disable messages. "
+                   "Long phrases wrap on phones."),
+    )
     image = models.ForeignKey(
         "wagtailimages.Image",
         null=True,
@@ -326,6 +333,7 @@ class AppsIndexPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("introduction"),
+        FieldPanel("glitch_messages"),
         FieldPanel("image"),
     ]
 
