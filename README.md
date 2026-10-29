@@ -484,3 +484,40 @@ the safe Django `json_script` binding in `apps_index_page.html`, and
 plain text (never evaluated as HTML), and previous interactive card behavior
 is unchanged. The field was introduced in migration
 `website/migrations/0010_appsindexpage_glitch_messages.py`.
+
+### Ambient animated numbered project cards (October 2026)
+
+The six featured cards on `/en/projects/` now have **self-running, staggered
+ambient animations** independent of the Letter Glitch background. Each card
+uses its own project accent (cyan, mint, lime, purple, emerald, indigo):
+
+- Two small light pulses travel along the top and bottom borders (CSS transform,
+  *not* an animated conic gradient).
+- The real banner image gently breathes (about 1.9% scale change) and is swept
+  by a brief low-opacity holographic line approximately every 12 seconds.
+- Its `01 / 06`-style number occasionally flickers with a discrete, stepped
+  glow; the six timelines are deliberately staggered.
+- Desktop pointer hover adds a restrained 3D tilt (max ~2–2.5 degrees),
+  raised shadow, localized light and stronger image scale. The native card links
+  continue to work. Touch has no hover tilt; keyboard focus gets a visible
+  accent outline.
+
+There are **no new third-party JS or WebGL dependencies**. Styling is scoped to
+`.gallery-page .case-tile` in `website/static/css/project-pages.css`. The
+3.4-KB vanilla JS helper `website/static/js/gallery-cards.js` only maintains
+an IntersectionObserver for visibility, pointer-based CSS variables and
+accessibility/battery state. Only onscreen/nearby cards animate; offscreen
+cards pause. Hidden tabs, reduced-motion users and browsers in Save-Data mode
+stop card animations. No perpetual JS timer or RAF loop is introduced.
+
+**Performance guard:** the initial idea of animating a masked conic-gradient
+border caused excessive main-thread repaint work. It was replaced by GPU-
+composited transforms of two thin border tracers. In headless Chrome on ASUS,
+desktop browser TaskDuration over a 3.8-second interval was approximately
+0.92 sec with the whole card effect and 0.57 sec with all card animations
+suppressed (both include the existing Letter Glitch background). On simulated
+mobile, it was approximately 0.51 sec versus 0.13 sec. These are *development
+benchmarks*, not claims about battery draw or real-device temperature. The
+layout, card links, visibility pausing, motion preferences, and desktop/mobile
+rendering were also verified. Firefox ESR rendered the new background and card
+surfaces in a headless smoke test.

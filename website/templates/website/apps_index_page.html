@@ -6,7 +6,7 @@
     <title>Selected Projects & Case Studies | Lotfinity</title>
     <meta name="description" content="A curated selection of real software, systems and hardware projects. Explore public source repositories, case studies and development stages.">
     <link rel="icon" href="{% static 'img/lotfinity.png' %}">
-    <link rel="stylesheet" href="{% static 'css/project-pages.css' %}?v=letter-glitch-phrases-2">
+    <link rel="stylesheet" href="{% static 'css/project-pages.css' %}?v=living-cards-3">
 </head>
 <body class="gallery-page">
 <div class="gallery-letter-glitch" data-letter-glitch aria-hidden="true">
@@ -25,7 +25,8 @@
         <div class="section-header"><h2 id="featured-heading">Selected builds</h2><span>Software / devices / intelligence</span></div>
         <div class="case-grid">
             {% for project in featured_apps %}
-            <article class="case-tile">
+            <article class="case-tile" data-project-card>
+                <span class="case-tile__signal" aria-hidden="true"></span>
                 <span class="case-tile__number">{{ forloop.counter|stringformat:"02d" }} <span>/ {{ featured_count|stringformat:"02d" }}</span></span>
                 <a class="case-cover" href="{{ project.url }}" aria-label="Read {{ project.title }}">
                     {% if project.banner_image %}{% image project.banner_image fill-900x506 format-webp as preview %}<img src="{{ preview.url }}" width="{{ preview.width }}" height="{{ preview.height }}" alt="Designed banner for {{ project.title }}" loading="lazy">
@@ -53,4 +54,5 @@
 <footer class="site-footer">Lotfinity · Investigate, integrate, build. <a href="/en/">Back to homepage ↑</a></footer>
 {{ page.glitch_messages|json_script:"gallery-glitch-messages" }}
 <script defer src="{% static 'js/gallery-letter-glitch.js' %}?v=messages-4"></script>
+<script defer src="{% static 'js/gallery-cards.js' %}?v=2"></script>
 </body></html>

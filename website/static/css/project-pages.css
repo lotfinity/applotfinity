@@ -173,3 +173,184 @@ body.gallery-page {
 @media (max-width: 700px) {
   .gallery-page .page-note + section { padding-top: 80px; }
 }
+
+/* Living project cards: subtle self-running light, edge signal and number pulse.
+   The effect belongs to the numbered gallery only. No WebGL/React/scroll trigger.
+   Off-screen cards are paused by IntersectionObserver; no continuous JS loop. */
+.gallery-page .case-tile {
+  --card-accent: #75d7ef;
+  --card-motion: paused;
+  --card-delay: 0s;
+  --card-tilt-x: 0deg;
+  --card-tilt-y: 0deg;
+  --card-lift: 0px;
+  position: relative;
+  isolation: isolate;
+  transform: perspective(950px) rotateX(var(--card-tilt-x)) rotateY(var(--card-tilt-y)) translateY(var(--card-lift));
+  transform-style: flat;
+  transition: transform 280ms cubic-bezier(.2,.75,.23,1), box-shadow 280ms ease;
+  will-change: auto;
+}
+.gallery-page .case-tile:nth-child(1) { --card-accent: #73d9fc; --card-delay: -1.5s; }
+.gallery-page .case-tile:nth-child(2) { --card-accent: #70ebc2; --card-delay: -3.6s; }
+.gallery-page .case-tile:nth-child(3) { --card-accent: #d0f957; --card-delay: -6.2s; }
+.gallery-page .case-tile:nth-child(4) { --card-accent: #db8cfb; --card-delay: -8.1s; }
+.gallery-page .case-tile:nth-child(5) { --card-accent: #77eab4; --card-delay: -10.5s; }
+.gallery-page .case-tile:nth-child(6) { --card-accent: #adabff; --card-delay: -12.3s; }
+.gallery-page .case-tile.is-near { --card-motion: running; }
+.gallery-page .case-tile::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: -1px;
+  padding: 1.4px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(136deg,
+    color-mix(in srgb, var(--card-accent) 48%, transparent),
+    transparent 37%, transparent 72%,
+    color-mix(in srgb, var(--card-accent) 36%, transparent));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+/* Two tiny, GPU-transformed light tracers along opposite card edges.
+   Unlike animating a masked conic-gradient, transforms do not repaint the card. */
+.gallery-page .case-tile > .case-tile__signal {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.gallery-page .case-tile__signal::before,
+.gallery-page .case-tile__signal::after {
+  content: '';
+  position: absolute;
+  width: 35%;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    transparent,
+    color-mix(in srgb, var(--card-accent) 54%, transparent),
+    var(--card-accent),
+    transparent);
+  animation: gallery-card-track 12s linear infinite;
+  animation-delay: var(--card-delay);
+  animation-play-state: var(--card-motion);
+}
+.gallery-page .case-tile__signal::before { top: 0; left: 0; }
+.gallery-page .case-tile__signal::after {
+  bottom: 0;
+  right: 0;
+  opacity: .55;
+  animation-direction: reverse;
+  animation-duration: 14.6s;
+}
+.gallery-page .case-tile::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(400px circle at var(--card-pointer-x, 50%) var(--card-pointer-y, 40%),
+    color-mix(in srgb, var(--card-accent) 15%, transparent), transparent 67%);
+  transition: opacity 230ms ease;
+}
+.gallery-page .case-tile > * { position: relative; z-index: 1; }
+.gallery-page .case-cover {
+  position: relative;
+  isolation: isolate;
+}
+.gallery-page .case-cover img {
+  transform: scale(1);
+  transform-origin: center;
+  animation: gallery-card-breathe 10.5s ease-in-out infinite alternate;
+  animation-delay: var(--card-delay);
+  animation-play-state: var(--card-motion);
+  transition: transform 420ms ease;
+}
+.gallery-page .case-cover::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: -75% 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(180deg,
+    transparent 40%,
+    color-mix(in srgb, var(--card-accent) 8%, transparent) 47%,
+    color-mix(in srgb, var(--card-accent) 34%, transparent) 49.9%,
+    rgba(230,255,255,.22) 50%,
+    color-mix(in srgb, var(--card-accent) 8%, transparent) 52%,
+    transparent 58%);
+  transform: translate3d(0,-57%,0);
+  animation: gallery-card-scan 11.8s ease-in-out infinite;
+  animation-delay: var(--card-delay);
+  animation-play-state: var(--card-motion);
+}
+.gallery-page .case-tile__number {
+  color: var(--card-accent);
+  animation: gallery-number-signal 9.1s steps(1, end) infinite;
+  animation-delay: var(--card-delay);
+  animation-play-state: var(--card-motion);
+}
+.gallery-page .case-tile__number span { color: #9cb4c6; }
+.gallery-page .case-tile.is-hovered {
+  --card-lift: -7px;
+  box-shadow: 0 19px 46px rgba(0,5,18,.38), 0 0 34px color-mix(in srgb,var(--card-accent) 11%,transparent);
+  will-change: transform;
+}
+.gallery-page .case-tile.is-hovered::after { opacity: 1; }
+.gallery-page .case-tile.is-hovered .case-cover img { animation-play-state: paused; transform: scale(1.045); }
+.gallery-page .case-tile:focus-within {
+  box-shadow: 0 0 0 1px color-mix(in srgb,var(--card-accent) 65%, transparent),
+    0 0 25px color-mix(in srgb,var(--card-accent) 17%, transparent);
+}
+@keyframes gallery-card-track {
+  from { transform: translate3d(-110%,0,0); }
+  to { transform: translate3d(300%,0,0); }
+}
+@keyframes gallery-card-breathe { to { transform: scale(1.019); } }
+@keyframes gallery-card-scan {
+  0%, 10%, 80%, 100% { transform: translate3d(0,-57%,0); opacity: 0; }
+  19% { opacity: .70; }
+  30% { transform: translate3d(0,57%,0); opacity: .42; }
+  35% { transform: translate3d(0,57%,0); opacity: 0; }
+}
+@keyframes gallery-number-signal {
+  0%, 12%, 19%, 100% { text-shadow: 0 0 0 transparent; opacity: .88; }
+  14%, 16% { text-shadow: 0 0 13px var(--card-accent); opacity: 1; }
+  15% { text-shadow: 0 0 5px var(--card-accent); opacity: .68; }
+}
+/* On phones there is no hover tilt. Reduce the number of animated layers. */
+@media (hover:none), (pointer:coarse) {
+  .gallery-page .case-tile { transform: none; }
+  .gallery-page .case-tile.is-hovered { --card-lift: 0px; box-shadow: none; }
+  .gallery-page .case-cover img { animation-duration: 14s; }
+  .gallery-page .case-tile:active .case-cover { box-shadow: 0 0 0 1px var(--card-accent); }
+}
+/* Battery saver and reduced motion turn off continuous + interaction animation. */
+.gallery-page.gallery-cards--still .case-tile,
+.gallery-page.gallery-cards--still .case-tile::before,
+.gallery-page.gallery-cards--still .case-tile__signal::before,
+.gallery-page.gallery-cards--still .case-tile__signal::after,
+.gallery-page.gallery-cards--still .case-tile__number,
+.gallery-page.gallery-cards--still .case-cover img,
+.gallery-page.gallery-cards--still .case-cover::after { animation: none !important; transition: none !important; }
+.gallery-page.gallery-cards--still .case-tile { transform: none !important; }
+.gallery-page.gallery-cards--still .case-tile.is-hovered::after { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .gallery-page .case-tile,
+  .gallery-page .case-tile::before,
+  .gallery-page .case-tile__signal::before,
+  .gallery-page .case-tile__signal::after,
+  .gallery-page .case-tile__number,
+  .gallery-page .case-cover img,
+  .gallery-page .case-cover::after { animation: none !important; transition: none !important; }
+  .gallery-page .case-tile { transform: none !important; }
+}
