@@ -521,3 +521,13 @@ benchmarks*, not claims about battery draw or real-device temperature. The
 layout, card links, visibility pausing, motion preferences, and desktop/mobile
 rendering were also verified. Firefox ESR rendered the new background and card
 surfaces in a headless smoke test.
+
+**LotoT engineering page refreshed (2026-10-30):** audited latest
+`lotfinity/lotot-android` `main` commit `b4911b2` (2026-08-14), then updated
+its Wagtail project description, feature set, source-linked release narrative,
+and technology tags using `scripts/update_lotot_case_study.py`. The
+`lotot_engineering.html` partial adds a compact architecture diagram and
+commit-linked development timeline, scoped to the LotoT case study only.
+Existing actual APK captures and the promotional banner are preserved. AI
+provider availability and connected vehicle tests are **not claimed**. See
+`docs/portfolio-art-direction.md` for commit links and attribution.

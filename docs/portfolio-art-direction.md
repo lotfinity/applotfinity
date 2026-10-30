@@ -92,3 +92,41 @@ The editorial **1600×900 WebP (~60 KB)** at `media/design_exports/06-beyond-web
 `media/design_exports/02-pricebridge-banner-v1.webp` is a 1600×900 (~64 KB) promotional image built by `scripts/build_pricebridge_banner.py` from **existing actual application screenshots** `media/original_images/pricebridge-desktop-card-scroll180-20261029.webp` and `media/original_images/pricebridge-mobile-card-scroll370-20261029.webp`. It depicts the historical July 2026 evidence-gated smartphone comparison and explicitly states *not live offers*. The outside circuit/data graph background is abstract editorial decoration rather than an additional dataset. The two screenshot records (Wagtail images 28 and 29) are preserved as independent desktop/mobile case-study mockups.
 
 Wagtail banner record 40 was created via `manage.py apply_project_banner --slug pricebridge` and linked to the project without modifying any other project's banner. All six project covers were confirmed to load in the actual `/en/projects/` gallery at desktop width and when each lazy-loaded card enters view on a narrow viewport, with no JavaScript errors or horizontal overflow. The same new image was also verified in the homepage carousel. A SQLite/media backup was taken before the CMS change.
+
+### LotoT refreshed engineering case study — source review 2026-10-30
+
+The LotoT `main` branch was checked directly with `git ls-remote origin HEAD`
+and `git fetch` on ASUS. The latest commit was
+[`b4911b2`](https://github.com/lotfinity/lotot-android/commit/b4911b26fe6e3518831595dab759746178dd4cdb)
+(August 14, 2026), **not an October release**. Other feature commits include
+[`eb7c186`](https://github.com/lotfinity/lotot-android/commit/eb7c186df969547e39ad3110f5c43c4ca0f22ae2)
+(Aug 12: LoToTi and onboarding),
+[`7681d1c`](https://github.com/lotfinity/lotot-android/commit/7681d1c19904fceb9d23107ff6a34a4b442af1fd)
+(Jul 31: foreground telemetry gateway), and
+[`d8e42ed`](https://github.com/lotfinity/lotot-android/commit/d8e42ed9eae9c262bcf8830cdfdc3dafd48ac990)
+(Jul 28: live OBD cockpit).
+
+- The source shows LoToTi AI code with an evidence-first system prompt and
+  ordered fallback among configured LiteLLM / Codex-oriented / StepFun-oriented
+  routes and other providers. Its prototype is **not** independently verified
+  against live external AI endpoints. Never publish embedded build credentials.
+- The in-app DTC reference database explains potential meanings of codes; its
+  inclusion does not mean a diagnostic scan discovered a vehicle fault.
+- The foreground service includes MQTT queue/retry and secure credential
+  storage; the real-world reliability of all network edge cases has not been
+  independently measured here.
+- The existing phone screenshots and 03/06 promotional banner are authentic
+  captures of the installed app without a vehicle adapter. They are preserved
+  and not relabeled as AI-provider or live-ECU proof.
+
+The Wagtail record `AppPage(slug="lotot")` now has a revised title, summary,
+seven engineering feature bullets, extended tech tags and thirteen editable
+StreamField narrative blocks. The idempotent importer
+`scripts/update_lotot_case_study.py` refuses to replace independent human
+editorial content and preserves all existing media assets. A source-linked
+case study partial (`website/templates/website/partials/lotot_engineering.html`)
+adds a compact feature overview, six-step architecture diagram, four commit
+milestones and explicit prototype/hardware limitations. The latter is
+project-specific and can be updated alongside future reviewed source changes.
+CSS applies only to `.project-detail--lotot` and no new animation runtime is
+added. Wagtail database and media backups are kept on ASUS before publication.

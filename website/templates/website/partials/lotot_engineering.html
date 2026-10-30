@@ -1,0 +1,48 @@
+<section class="lotot-story" aria-labelledby="lotot-engineering-title">
+  <div class="lotot-story__masthead">
+    <div>
+      <span class="lotot-story__eyebrow">PROJECT DEEP DIVE / VERIFIED SOURCE</span>
+      <h2 id="lotot-engineering-title">From an OBD engine to a connected intelligence layer.</h2>
+      <p>LotoT extends a proven diagnostic foundation with its own cockpit, phone sensors, resilient telemetry and a developing AI assistant. Each layer keeps its data source explicit.</p>
+    </div>
+    <a class="lotot-story__commit" href="https://github.com/lotfinity/lotot-android/commit/b4911b26fe6e3518831595dab759746178dd4cdb" target="_blank" rel="noopener noreferrer">
+      <span>LATEST VERIFIED MAIN COMMIT</span>
+      <strong>b4911b2 <span aria-hidden="true">↗</span></strong>
+      <small>14 August 2026</small>
+    </a>
+  </div>
+  <div class="lotot-story__spotlights" aria-label="Engineering capabilities">
+    <div class="lotot-story__spotlight"><span aria-hidden="true">01 / DIAGNOSE</span><strong>Native OBD-II</strong><p>AndrOBD, ELM327, live PIDs and fault-code workflows.</p></div>
+    <div class="lotot-story__spotlight"><span aria-hidden="true">02 / OBSERVE</span><strong>Phone + cockpit</strong><p>React telemetry, GPS and motion-sensor context.</p></div>
+    <div class="lotot-story__spotlight"><span aria-hidden="true">03 / TRANSMIT</span><strong>Queued MQTT</strong><p>Foreground gateway, device-scoped topics and retry queue.</p></div>
+    <div class="lotot-story__spotlight"><span aria-hidden="true">04 / INTERPRET</span><strong>LoToTi copilot</strong><p>Evidence-first AI, DTC reference and model fallback.</p></div>
+  </div>
+  <div class="lotot-story__architecture" aria-labelledby="lotot-flow-title">
+    <div class="lotot-story__section-header">
+      <div><span class="lotot-story__eyebrow">SYSTEM ARCHITECTURE</span><h3 id="lotot-flow-title">One data journey, separated by source.</h3></div>
+      <span class="lotot-story__section-meta">Android / WebView / MQTT</span>
+    </div>
+    <ol class="lotot-story__flow">
+      <li><span>01</span><strong>Vehicle + ELM327</strong><small>ECU data when connected</small></li>
+      <li><span>02</span><strong>AndrOBD</strong><small>Native diagnostic decoding</small></li>
+      <li><span>03</span><strong>Java ↔ WebView</strong><small>Native bridge + live events</small></li>
+      <li><span>04</span><strong>React cockpit</strong><small>Charts + health overview</small></li>
+      <li><span>05</span><strong>MQTT gateway</strong><small>Queue + device identity</small></li>
+      <li><span>06</span><strong>Django platform</strong><small>Companion server integration</small></li>
+    </ol>
+    <p class="lotot-story__guardrail"><span aria-hidden="true">◎</span> The AI copilot interprets available, labeled diagnostic context; GPS or accelerometer readings alone cannot establish vehicle health. A local DTC description is a reference, not proof of a fault.</p>
+  </div>
+  <div class="lotot-story__timeline" aria-labelledby="lotot-milestones-title">
+    <div class="lotot-story__section-header">
+      <div><span class="lotot-story__eyebrow">DEVELOPMENT LOG</span><h3 id="lotot-milestones-title">Recent milestones</h3></div>
+      <a href="https://github.com/lotfinity/lotot-android/commits/main/" rel="noopener noreferrer" target="_blank">Full GitHub history ↗</a>
+    </div>
+    <div class="lotot-story__milestones">
+      <a href="https://github.com/lotfinity/lotot-android/commit/b4911b26fe6e3518831595dab759746178dd4cdb" target="_blank" rel="noopener noreferrer"><time datetime="2026-08-14">14 AUG 2026</time><strong>Fallback chain</strong><span>LiteLLM routes with additional model options for the LoToTi prototype.</span><em>View commit ↗</em></a>
+      <a href="https://github.com/lotfinity/lotot-android/commit/eb7c186df969547e39ad3110f5c43c4ca0f22ae2" target="_blank" rel="noopener noreferrer"><time datetime="2026-08-12">12 AUG 2026</time><strong>LoToTi arrives</strong><span>Onboarding, AI diagnostic context and bundled DTC reference data.</span><em>View commit ↗</em></a>
+      <a href="https://github.com/lotfinity/lotot-android/commit/7681d1c19904fceb9d23107ff6a34a4b442af1fd" target="_blank" rel="noopener noreferrer"><time datetime="2026-07-31">31 JUL 2026</time><strong>Telemetry resilience</strong><span>Foreground service, queued delivery and secure MQTT credential handling.</span><em>View commit ↗</em></a>
+      <a href="https://github.com/lotfinity/lotot-android/commit/d8e42ed9eae9c262bcf8830cdfdc3dafd48ac990" target="_blank" rel="noopener noreferrer"><time datetime="2026-07-28">28 JUL 2026</time><strong>Live diagnostic UI</strong><span>Native diagnostic data wired into the custom Android cockpit.</span><em>View commit ↗</em></a>
+    </div>
+  </div>
+  <p class="lotot-story__scope">Engineering snapshot checked on 30 October 2026 against the public <code>main</code> branch. Capabilities described here are present in source; hardware ECU testing, external AI-provider availability and production deployment were not independently verified. Screenshots on this page were captured from the installed Android app without a connected OBD adapter.</p>
+</section>

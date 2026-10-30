@@ -6,9 +6,9 @@
     <title>{{ page.title }} | Lotfinity Case Study</title>
     <meta name="description" content="{{ page.description|truncatechars:180 }}">
     <link rel="icon" href="{% static 'img/lotfinity.png' %}">
-    <link rel="stylesheet" href="{% static 'css/project-pages.css' %}?v=network-1">
+    <link rel="stylesheet" href="{% static 'css/project-pages.css' %}?v=lotot-story-1">
 </head>
-<body class="project-detail">
+<body class="project-detail{% if page.slug == 'lotot' %} project-detail--lotot{% endif %}">
 <div class="project-energy" data-project-network aria-hidden="true"><canvas class="project-energy__canvas"></canvas></div>
 <header class="site-header"><a class="brand" href="/en/">Lotfinity<span class="brand-mark">/</span></a>
     <nav><a href="/en/projects/">All projects</a><a href="/en/">Homepage</a></nav>
@@ -28,6 +28,7 @@
         {% image page.mockup_design width-1200 format-webp as screenshot %}
         <figure class="detail-figure"><img src="{{ screenshot.url }}" width="{{ screenshot.width }}" height="{{ screenshot.height }}" alt="{{ page.title }} project visual" loading="lazy"><figcaption>Project visual</figcaption></figure>
     {% endif %}
+    {% if page.slug == 'lotot' %}{% include "website/partials/lotot_engineering.html" %}{% endif %}
     {% if page.feature_items %}<section class="detail-section"><h2>What this project explores</h2>
         <ul class="detail-list">{% for feature in page.feature_items %}<li>{{ feature }}</li>{% endfor %}</ul>
     </section>{% endif %}
