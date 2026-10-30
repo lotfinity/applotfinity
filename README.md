@@ -531,3 +531,16 @@ commit-linked development timeline, scoped to the LotoT case study only.
 Existing actual APK captures and the promotional banner are preserved. AI
 provider availability and connected vehicle tests are **not claimed**. See
 `docs/portfolio-art-direction.md` for commit links and attribution.
+
+**Five more source-backed project studies (30 Oct 2026):** Ohmlet, PriceBridge,
+Neon Strip Studio, IstanbulPropTech and Beyond Website now have detailed,
+source-linked technical overviews and milestones, as already done for LotoT.
+Project-specific data lives in `website/project_source_stories.py`, the shared
+case-study layout in `website/templates/website/partials/project_source_engineering.html`,
+and an idempotent per-project Wagtail publisher in
+`scripts/update_source_case_study.py`. Editable feature and engineering body
+content is stored in Wagtail; case images, banners and GitHub source repositories
+are not modified. Each entry distinguishes shipped source, prototype behavior,
+historical market data and features not verified on real devices or production
+infrastructure. See `docs/portfolio-art-direction.md` for the source/commit
+matrix and scope limits.

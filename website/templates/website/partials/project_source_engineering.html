@@ -1,0 +1,43 @@
+<section class="lotot-story source-story" aria-labelledby="source-story-heading">
+  <div class="lotot-story__masthead">
+    <div>
+      <span class="lotot-story__eyebrow">ENGINEERING DEEP DIVE / GITHUB SOURCE REVIEW</span>
+      <h2 id="source-story-heading">{{ story.intro }}</h2>
+      <p>{{ story.summary }}</p>
+    </div>
+    <a class="lotot-story__commit" href="{{ page.source_url }}/commit/{{ story.sha }}" target="_blank" rel="noopener noreferrer">
+      <span>LATEST VERIFIED MAIN COMMIT</span>
+      <strong>{{ story.sha|slice:':7' }} <span aria-hidden="true">↗</span></strong>
+      <small>{{ story.verified }}</small>
+    </a>
+  </div>
+  <div class="lotot-story__spotlights" aria-label="Engineering capabilities">
+    {% for code, name, detail in story.highlights %}
+    <div class="lotot-story__spotlight"><span aria-hidden="true">{{ forloop.counter|stringformat:'02d' }} / {{ code }}</span><strong>{{ name }}</strong><p>{{ detail }}</p></div>
+    {% endfor %}
+  </div>
+  <div class="lotot-story__architecture" aria-labelledby="source-story-flow-heading">
+    <div class="lotot-story__section-header">
+      <div><span class="lotot-story__eyebrow">HOW THE SYSTEM CONNECTS</span><h3 id="source-story-flow-heading">From input to outcome.</h3></div>
+      <span class="lotot-story__section-meta">Implementation architecture</span>
+    </div>
+    <ol class="lotot-story__flow">
+      {% for title, description in story.flow %}
+      <li><span>{{ forloop.counter|stringformat:'02d' }}</span><strong>{{ title }}</strong><small>{{ description }}</small></li>
+      {% endfor %}
+    </ol>
+    <p class="lotot-story__guardrail"><span aria-hidden="true">◎</span>{{ story.caveat }}</p>
+  </div>
+  <div class="lotot-story__timeline" aria-labelledby="source-story-timeline-heading">
+    <div class="lotot-story__section-header">
+      <div><span class="lotot-story__eyebrow">SOURCE HISTORY</span><h3 id="source-story-timeline-heading">Verified repository milestones</h3></div>
+      <a href="{{ page.source_url }}/commits/main/" rel="noopener noreferrer" target="_blank">View commit history ↗</a>
+    </div>
+    <div class="lotot-story__milestones">
+      {% for date, sha, title, summary in story.milestones %}
+      <a href="{{ page.source_url }}/commit/{{ sha }}" target="_blank" rel="noopener noreferrer"><time datetime="{{ date }}">{{ date }}</time><strong>{{ title }}</strong><span>{{ summary }}</span><em>View commit ↗</em></a>
+      {% endfor %}
+    </div>
+  </div>
+  <p class="lotot-story__scope">Reviewed against the public repository on 30 October 2026. Commit dates refer to the actual project source, not the date of this portfolio update. The existing screenshots and banners are preserved; their original provenance and test limitations still apply. Additional narrative sections below remain editable through Wagtail.</p>
+</section>

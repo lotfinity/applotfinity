@@ -412,3 +412,27 @@ body.gallery-page {
 }
 @media(max-width:390px) { .lotot-story__spotlights { grid-template-columns: 1fr; } }
 @media(prefers-reduced-motion:reduce) { .lotot-story__milestones a { transition: none; } }
+
+/* Reusable source-audited story inherits the compact LotoT editorial pattern. */
+.project-detail--source .lotot-story { margin: 46px 0 54px; }
+.project-detail--source .case-body { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.project-detail--source .case-body > .block-heading { grid-column: 1 / -1; }
+.project-detail--source .case-body h2 { margin: 8px 0 0; font-size: 1.46rem; }
+.project-detail--source .case-body > .block-paragraph { min-width: 0; padding: 16px 19px; border-radius: 12px; background: rgba(17,46,48,.5); border: 1px solid rgba(128,219,166,.13); color: #b9d2c7; font-size: .9rem; }
+.project-detail--source .case-body .block-paragraph p:first-child { margin-top: 0; }
+.project-detail--source .case-body .block-paragraph p:last-child { margin-bottom: 0; }
+.project-detail--source .case-body .block-paragraph strong { color: #e5f7e7; }
+.source-tone--mint .lotot-story { --story-tone: #89eec4; }
+.source-tone--cyan .lotot-story { --story-tone: #89daf7; }
+.source-tone--violet .lotot-story { --story-tone: #d0a3ff; }
+.source-tone--emerald .lotot-story { --story-tone: #9dedba; }
+.source-tone--indigo .lotot-story { --story-tone: #afb7ff; }
+.project-detail--source .lotot-story__eyebrow,
+.project-detail--source .lotot-story__flow li>span,
+.project-detail--source .lotot-story__milestones time { color: var(--story-tone, #bbf4a8); }
+.project-detail--source .lotot-story__commit strong { color: var(--story-tone, #bbf4a8); }
+.project-detail--source .lotot-story__guardrail { border-left-color: var(--story-tone, #bbf4a8); }
+@media(max-width:700px) { .project-detail--source .case-body { grid-template-columns: 1fr; } }
+
+/* Long project names (IstanbulPropTech) must fit narrow phones. */
+.project-detail--source .page-title { overflow-wrap: anywhere; }

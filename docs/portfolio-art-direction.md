@@ -130,3 +130,32 @@ milestones and explicit prototype/hardware limitations. The latter is
 project-specific and can be updated alongside future reviewed source changes.
 CSS applies only to `.project-detail--lotot` and no new animation runtime is
 added. Wagtail database and media backups are kept on ASUS before publication.
+
+### Five remaining source-verified case studies — 30 October 2026
+
+All five featured projects that lacked the LotoT-style technical deep dive
+were reviewed against their **public GitHub main branches** and enriched in
+Wagtail in gallery order. Editorial metadata is centralized in
+`website/project_source_stories.py`; the presentation is the reusable,
+source-linked `website/templates/website/partials/project_source_engineering.html`
+component, injected through the `project_source_story` template tag. Every
+project now has a four-capability header, a six-step flow, verified milestone
+links, scope limitations, a revised description, and Wagtail-editable narrative
+blocks. The one-at-a-time guarded publisher is
+`scripts/update_source_case_study.py <slug>`: it refuses to overwrite manually
+edited existing bodies, and it preserves all prior Wagtail media fields.
+
+| Project | Last checked GitHub main commit | Source-specific additions | Claim boundaries |
+|---|---|---|---|
+| Ohmlet | [`8ddf738` (2026-10-16)](https://github.com/lotfinity/ohmlet/commit/8ddf7388b3e4fbaf143a5826e585f3ee27570c5e) | FireBeetle GPIO modeling, experimental Arduino ESP32 firmware co-simulation, MCP workbench, analog/digital solver, rendering modes | Source-backed features, not certified hardware output. Uncommitted `/home/lofa/DEV/ohmlet` modifications remain untouched and are not represented as published GitHub updates. |
+| PriceBridge | [`82d2272` (2026-07-20)](https://github.com/lotfinity/pricebridge-clean/commit/82d227272622d86efa9cb0384e8dae2af0486234) | Raw evidence, canonical Samsung/iPhone variant gate, Instagram/Sahibinden intake and historical opportunity snapshots | One public commit only; ASUS private preview updates, historical listings and prices are not treated as fresh public release data. |
+| Neon Strip Studio | [`89e5e8e` (2026-10-21)](https://github.com/lotfinity/neon-strip-studio/commit/89e5e8e9530ea53f8fde8eafe5a028923ffaccfe) | Continuous 150-group geometry, WLED Peek, recorded playback, portable designs, platform-specific players, legacy-graphics fallback | Browser demo is synthetic when not connected; Android/GNOME and physical WLED integrations remain not hardware-verified. |
+| IstanbulPropTech | [`ba303b7` (2025-11-14)](https://github.com/lotfinity/IstanbulPropTech/commit/ba303b73d823839c357b3e3bb3bb07cf05d78d7c) | Hierarchical store filters, listings + transit + education layers, cached nearest-store lookups | No evidence of a fresh public commit, production rollout, or current inventory. Existing mockups are reference images. |
+| Beyond Website | [`f77d0fe` (2025-07-28)](https://github.com/lotfinity/beyond-website-v5/commit/f77d0fee94ecc95e0135d0a6fe444402ddf52662) | Django/BeyondClinic dashboard workflow modules for messages, appointments, prescriptions, referral and travel/schedules | Repository templates are not proof of live clinical integrations; no potentially sensitive repository artifacts are deployed or copied into Git. |
+
+LotoT retains its pre-existing, separately authored deep-dive section. All six
+featured projects now have richer content and their existing banner and device
+screenshots are preserved. All five updated project pages were browser-checked
+at desktop, mobile and narrow 320px widths. The title wrapping for
+IstanbulPropTech was corrected after detecting a narrow-viewport overflow.
+No additional JavaScript/WebGL animation runtimes were introduced.
